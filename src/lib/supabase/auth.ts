@@ -2,42 +2,36 @@ import { createClient } from "./client";
 
 export async function signUp(email: string, password: string, username: string) {
   const supabase = createClient();
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
 
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { username } },
+    options: {
+      data: { username },
+      emailRedirectTo: `${origin}/auth/callback`,
+    },
   });
   if (error) {
     throw error;
   }
 
-  if (data.user) {
-    const { error: userInsertError } = await supabase.from("users").insert({
-      id: data.user.id,
-      email,
-      username,
-    });
-    if (userInsertError) {
-      throw userInsertError;
-    }
+  return data;
+}
 
-    const { error: aiSettingsError } = await supabase.from("ai_settings").insert({
-      user_id: data.user.id,
-    });
-    if (aiSettingsError) {
-      throw aiSettingsError;
-    }
-
-    const { error: voiceSettingsError } = await supabase.from("voice_settings").insert({
-      user_id: data.user.id,
-    });
-    if (voiceSettingsError) {
-      throw voiceSettingsError;
-    }
+export async function resendSignupConfirmation(email: string) {
+  const supabase = createClient();
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email,
+    options: {
+      emailRedirectTo: `${origin}/auth/callback`,
+    },
+  });
+  if (error) {
+    throw error;
   }
-
-  return data.user;
 }
 
 export async function logIn(email: string, password: string) {
@@ -47,6 +41,21 @@ export async function logIn(email: string, password: string) {
     throw error;
   }
   return data.user;
+}
+
+export async function signInWithGoogle() {
+  const supabase = createClient();
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
+  });
+  if (error) {
+    throw error;
+  }
+  return data;
 }
 
 export async function logOut() {

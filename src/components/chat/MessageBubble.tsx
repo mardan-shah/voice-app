@@ -22,20 +22,28 @@ const emotionLabel: Record<string, string> = {
 
 export function MessageBubble({ message, isStreaming = false }: MessageBubbleProps) {
   const isUser = message.role === "user";
+  const visibleContent = message.content.replace(/\n?EMOTION_DETECTED:[\s\S]*$/m, "").trim();
 
   return (
-    <div className={cn("flex w-full", isUser ? "justify-end" : "justify-start")}>
+    <div className={cn("flex w-full gap-3", isUser ? "justify-end" : "justify-start")}>
+      {!isUser ? (
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-blue-600 text-xs font-bold text-white shadow-md shadow-blue-600/20">
+          A
+        </span>
+      ) : null}
       <div
         className={cn(
-          "max-w-[90%] rounded-2xl px-4 py-3 text-sm sm:max-w-[75%]",
-          isUser ? "bg-blue-600 text-white" : "bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-zinc-100"
+          "max-w-[88%] rounded-2xl px-4 py-3 text-[15px] leading-6 sm:max-w-[72%]",
+          isUser
+            ? "rounded-tr-md bg-blue-600 text-white shadow-md shadow-blue-600/10"
+            : "rounded-tl-md border border-slate-200/80 bg-white text-slate-700 shadow-sm dark:border-white/8 dark:bg-white/6 dark:text-slate-200"
         )}
       >
         {isUser ? (
-          <p className="whitespace-pre-wrap">{message.content}</p>
+          <p className="whitespace-pre-wrap">{visibleContent}</p>
         ) : (
           <div className="prose prose-sm max-w-none dark:prose-invert">
-            <ReactMarkdown>{message.content}</ReactMarkdown>
+            <ReactMarkdown>{visibleContent}</ReactMarkdown>
           </div>
         )}
 

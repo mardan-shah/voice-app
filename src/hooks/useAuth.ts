@@ -15,11 +15,12 @@ export function useAuth(requireAuth = false) {
 
     void supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
+        const metadata = session.user.user_metadata;
         setUser({
           id: session.user.id,
           email: session.user.email ?? "",
-          username: session.user.user_metadata?.username ?? "",
-          createdAt: new Date(),
+          username: metadata?.username || metadata?.full_name || metadata?.name || "User",
+          createdAt: new Date(session.user.created_at),
         });
       } else {
         setUser(null);
@@ -34,11 +35,12 @@ export function useAuth(requireAuth = false) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
+        const metadata = session.user.user_metadata;
         setUser({
           id: session.user.id,
           email: session.user.email ?? "",
-          username: session.user.user_metadata?.username ?? "",
-          createdAt: new Date(),
+          username: metadata?.username || metadata?.full_name || metadata?.name || "User",
+          createdAt: new Date(session.user.created_at),
         });
       } else {
         setUser(null);

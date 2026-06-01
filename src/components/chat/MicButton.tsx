@@ -14,8 +14,16 @@ export function MicButton({ onTranscript }: MicButtonProps) {
   const { supported, isListening, startListening, stopListening } = useVoice();
   const [error, setError] = useState<string | null>(null);
 
+  if (supported === null) {
+    return <span className="px-2 text-xs text-slate-400">Checking microphone...</span>;
+  }
+
   if (!supported) {
-    return <span className="text-xs text-zinc-500">Microphone not supported in this browser</span>;
+    return (
+      <span className="max-w-48 px-2 text-xs leading-5 text-slate-400" title="Voice input requires Chrome or Edge with microphone permission.">
+        Voice input needs Chrome or Edge
+      </span>
+    );
   }
 
   const handleClick = async () => {
@@ -38,13 +46,13 @@ export function MicButton({ onTranscript }: MicButtonProps) {
   };
 
   return (
-    <div className="flex flex-col items-start gap-1">
+    <div className="flex items-center gap-2">
       <Button
         variant={isListening ? "danger" : "secondary"}
-        className={cn(isListening ? "animate-pulse" : "")}
+        className={cn("h-11 rounded-xl px-4", isListening ? "animate-pulse" : "")}
         onClick={() => void handleClick()}
       >
-        {isListening ? "Listening..." : "Mic"}
+        {isListening ? "Listening..." : "Use mic"}
       </Button>
       {error ? <span className="text-xs text-red-600">{error}</span> : null}
     </div>

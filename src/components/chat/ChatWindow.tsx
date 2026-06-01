@@ -20,15 +20,23 @@ export function ChatWindow({ messages, isGenerating }: ChatWindowProps) {
 
   if (messages.length === 0) {
     return (
-      <div className="flex h-full items-center justify-center rounded-xl border border-dashed border-zinc-300 text-center text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-        Start the conversation by sending your first message.
+      <div className="flex h-full items-center justify-center px-6 text-center">
+        <div className="max-w-md">
+          <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl border border-blue-200 bg-blue-50 text-2xl text-blue-600 shadow-xl shadow-blue-500/10 dark:border-blue-400/15 dark:bg-blue-500/10 dark:text-blue-300">
+            ✦
+          </div>
+          <h2 className="mt-5 text-xl font-semibold tracking-tight text-slate-900 dark:text-white">Start a conversation</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+            Your companion can remember context, respond with voice, and adapt to your preferred personality.
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="h-full overflow-y-auto rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-950">
-      <div className="space-y-4">
+    <div className="h-full overflow-y-auto px-1 py-4 sm:px-3">
+      <div className="space-y-6">
         {messages.map((message, index) => (
           <MessageBubble
             key={message.id}

@@ -1,0 +1,426 @@
+[     572ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[     625ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[     645ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/chat:0
+[     762ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[     848ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[    3762ms] [WARNING] The resource http://localhost:3000/_next/static/media/4cf2300e9c8272f7-s.p.woff2?v=1778612254794 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[    3762ms] [WARNING] The resource http://localhost:3000/_next/static/media/93f479601ee12b01-s.p.woff2?v=1778612254794 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[  103119ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[  103580ms] [LOG] [Fast Refresh] done in 461ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[  106580ms] [WARNING] The resource http://localhost:3000/_next/static/media/4cf2300e9c8272f7-s.p.woff2?v=1778612254794 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[  106580ms] [WARNING] The resource http://localhost:3000/_next/static/media/93f479601ee12b01-s.p.woff2?v=1778612254794 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[  341588ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[  342123ms] [LOG] [Fast Refresh] done in 536ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[  345124ms] [WARNING] The resource http://localhost:3000/_next/static/media/4cf2300e9c8272f7-s.p.woff2?v=1778612254794 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[  345124ms] [WARNING] The resource http://localhost:3000/_next/static/media/93f479601ee12b01-s.p.woff2?v=1778612254794 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[  936729ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[  938102ms] [LOG] [Fast Refresh] done in 1373ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[  938149ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[  941149ms] [WARNING] The resource http://localhost:3000/_next/static/media/4cf2300e9c8272f7-s.p.woff2?v=1778612254794 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[  941149ms] [WARNING] The resource http://localhost:3000/_next/static/media/93f479601ee12b01-s.p.woff2?v=1778612254794 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[ 1680890ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[ 1681226ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[ 1681311ms] [LOG] [Fast Refresh] done in 84ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[ 1681368ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[ 1681509ms] [LOG] [Fast Refresh] done in 282ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[ 1681525ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[ 1684525ms] [WARNING] The resource http://localhost:3000/_next/static/media/4cf2300e9c8272f7-s.p.woff2?v=1778612254794 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[ 1684525ms] [WARNING] The resource http://localhost:3000/_next/static/media/93f479601ee12b01-s.p.woff2?v=1778612254794 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[44532981ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[44533476ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[44534568ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[44534686ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[44534736ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[44537743ms] [WARNING] The resource http://localhost:3000/_next/static/media/4cf2300e9c8272f7-s.p.woff2?v=1778656787785 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[44537744ms] [WARNING] The resource http://localhost:3000/_next/static/media/93f479601ee12b01-s.p.woff2?v=1778656787785 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[48247053ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=jnupSQan1BAYyci_Ssh9Z' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48248056ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=jnupSQan1BAYyci_Ssh9Z' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48249058ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=jnupSQan1BAYyci_Ssh9Z' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48250060ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=jnupSQan1BAYyci_Ssh9Z' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48251062ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=jnupSQan1BAYyci_Ssh9Z' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48256069ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=jnupSQan1BAYyci_Ssh9Z' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48261088ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48264091ms] [WARNING] The resource http://localhost:3000/_next/static/media/4cf2300e9c8272f7-s.p.woff2?v=1778656787785 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[48264091ms] [WARNING] The resource http://localhost:3000/_next/static/media/93f479601ee12b01-s.p.woff2?v=1778656787785 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[48265796ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[48266449ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48266508ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48266532ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48266553ms] [ERROR] Can't perform a React state update on a component that hasn't mounted yet. This indicates that you have a side-effect in your render function that asynchronously tries to update the component. Move this work to useEffect instead. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/userspace/app/errors/intercept-console-error.js:57
+[48266561ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48266718ms] [LOG] [Fast Refresh] done in 156ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48266718ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48266804ms] [LOG] [Fast Refresh] done in 85ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48266805ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48266874ms] [LOG] [Fast Refresh] done in 69ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48266910ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48266974ms] [LOG] [Fast Refresh] done in 63ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48267018ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48267022ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48267079ms] [LOG] [Fast Refresh] done in 61ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48267132ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48267565ms] [LOG] [Fast Refresh] done in 547ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48267572ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48267596ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48268759ms] [LOG] [Fast Refresh] done in 1186ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48268766ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48268815ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48268906ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48268961ms] [LOG] [Fast Refresh] done in 55ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48268990ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48269046ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269104ms] [LOG] [Fast Refresh] done in 58ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269137ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48269182ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269229ms] [LOG] [Fast Refresh] done in 47ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269265ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48269309ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269353ms] [LOG] [Fast Refresh] done in 44ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269384ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48269434ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269471ms] [LOG] [Fast Refresh] done in 37ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269498ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48269574ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269641ms] [LOG] [Fast Refresh] done in 66ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269666ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48269702ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269738ms] [LOG] [Fast Refresh] done in 37ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269771ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48269822ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269862ms] [LOG] [Fast Refresh] done in 40ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269886ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48269933ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269968ms] [LOG] [Fast Refresh] done in 35ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48269991ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48270022ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48270066ms] [LOG] [Fast Refresh] done in 44ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48270094ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48270125ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48270157ms] [LOG] [Fast Refresh] done in 32ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48270187ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48270217ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48270250ms] [LOG] [Fast Refresh] done in 33ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48270275ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48270330ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48270367ms] [LOG] [Fast Refresh] done in 38ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48270393ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48270438ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48270483ms] [LOG] [Fast Refresh] done in 45ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48270516ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48270655ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[48271290ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48271353ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48271388ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48271391ms] [ERROR] Can't perform a React state update on a component that hasn't mounted yet. This indicates that you have a side-effect in your render function that asynchronously tries to update the component. Move this work to useEffect instead. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/userspace/app/errors/intercept-console-error.js:57
+[48271402ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48271616ms] [LOG] [Fast Refresh] done in 213ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48271628ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48271704ms] [LOG] [Fast Refresh] done in 76ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48271836ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48271904ms] [LOG] [Fast Refresh] done in 67ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48271957ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48272008ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272062ms] [LOG] [Fast Refresh] done in 55ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272121ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48272128ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272182ms] [LOG] [Fast Refresh] done in 54ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272206ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48272241ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272289ms] [LOG] [Fast Refresh] done in 47ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272315ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48272349ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272393ms] [LOG] [Fast Refresh] done in 43ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272427ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48272464ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272501ms] [LOG] [Fast Refresh] done in 36ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272530ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48272581ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272619ms] [LOG] [Fast Refresh] done in 37ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272662ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48272706ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272751ms] [LOG] [Fast Refresh] done in 46ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272775ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48272807ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272866ms] [LOG] [Fast Refresh] done in 58ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272920ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48272952ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48272990ms] [LOG] [Fast Refresh] done in 38ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48273014ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48273055ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48273102ms] [LOG] [Fast Refresh] done in 48ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48273144ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48273148ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48273197ms] [LOG] [Fast Refresh] done in 54ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48273224ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48273257ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48273308ms] [LOG] [Fast Refresh] done in 51ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48273335ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48273449ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[48274063ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274117ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274159ms] [ERROR] Can't perform a React state update on a component that hasn't mounted yet. This indicates that you have a side-effect in your render function that asynchronously tries to update the component. Move this work to useEffect instead. @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/userspace/app/errors/intercept-console-error.js:57
+[48274166ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48274167ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274275ms] [LOG] [Fast Refresh] done in 108ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274276ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274336ms] [LOG] [Fast Refresh] done in 59ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274400ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274435ms] [LOG] [Fast Refresh] done in 35ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274459ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48274489ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274552ms] [LOG] [Fast Refresh] done in 63ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274595ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274597ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48274636ms] [LOG] [Fast Refresh] done in 40ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274658ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48274712ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274771ms] [LOG] [Fast Refresh] done in 60ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274804ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48274854ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274929ms] [LOG] [Fast Refresh] done in 75ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48274971ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48275029ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275092ms] [LOG] [Fast Refresh] done in 63ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275129ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48275188ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275231ms] [LOG] [Fast Refresh] done in 42ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275268ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48275309ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275354ms] [LOG] [Fast Refresh] done in 46ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275376ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48275421ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275468ms] [LOG] [Fast Refresh] done in 47ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275509ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275512ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48275569ms] [LOG] [Fast Refresh] done in 61ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275619ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48275625ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275659ms] [LOG] [Fast Refresh] done in 34ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275681ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48275724ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275762ms] [LOG] [Fast Refresh] done in 39ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275802ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48275856ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275890ms] [LOG] [Fast Refresh] done in 34ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48275926ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48275966ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276014ms] [LOG] [Fast Refresh] done in 48ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276039ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48276076ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276122ms] [LOG] [Fast Refresh] done in 46ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276150ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48276186ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276221ms] [LOG] [Fast Refresh] done in 35ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276241ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48276290ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276336ms] [LOG] [Fast Refresh] done in 45ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276377ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276379ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48276424ms] [LOG] [Fast Refresh] done in 46ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276449ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48276498ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276557ms] [LOG] [Fast Refresh] done in 60ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276612ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48276643ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276682ms] [LOG] [Fast Refresh] done in 39ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48276753ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48276783ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[48277510ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48277573ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48277920ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48277975ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48278145ms] [LOG] [Fast Refresh] done in 170ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48279280ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48279287ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48279521ms] [LOG] [Fast Refresh] done in 234ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48279566ms] [LOG] [Fast Refresh] done in 278ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48279704ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48279706ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48279843ms] [LOG] [Fast Refresh] done in 138ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48279853ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48279889ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48279899ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48279955ms] [LOG] [Fast Refresh] done in 56ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280027ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48280047ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280094ms] [LOG] [Fast Refresh] done in 47ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280121ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48280246ms] [LOG] [Fast Refresh] done in 199ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280296ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280311ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48280329ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280455ms] [LOG] [Fast Refresh] done in 127ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280498ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48280623ms] [LOG] [Fast Refresh] done in 295ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280630ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280637ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48280728ms] [LOG] [Fast Refresh] done in 99ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280747ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48280755ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48281056ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[48281706ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48281755ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48281796ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48282085ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48282220ms] [LOG] [Fast Refresh] done in 135ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48282308ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48282309ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48282445ms] [LOG] [Fast Refresh] done in 135ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48282537ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48282582ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48282623ms] [LOG] [Fast Refresh] done in 41ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48282638ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48282729ms] [LOG] [Fast Refresh] done in 147ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48282731ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48282788ms] [LOG] [Fast Refresh] done in 57ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48283023ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48283063ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48283106ms] [LOG] [Fast Refresh] done in 43ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48283138ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48283178ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48283235ms] [LOG] [Fast Refresh] done in 57ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48283281ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48283291ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48283309ms] [LOG] [Fast Refresh] done in 29ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48283501ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48283505ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48283815ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[48284465ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48284539ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48284631ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48284683ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48284756ms] [LOG] [Fast Refresh] done in 73ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48284800ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48284813ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48284856ms] [LOG] [Fast Refresh] done in 56ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48284896ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48284898ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48284922ms] [LOG] [Fast Refresh] done in 26ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48284966ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48285001ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48285057ms] [LOG] [Fast Refresh] done in 55ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48285103ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48285104ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48285160ms] [LOG] [Fast Refresh] done in 56ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48285207ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48285209ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48285260ms] [LOG] [Fast Refresh] done in 53ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48285285ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48285340ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48285384ms] [LOG] [Fast Refresh] done in 44ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48285416ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48285474ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48285611ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[48286321ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48286378ms] [LOG] [HMR] connected @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48286414ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48286472ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48286590ms] [LOG] [Fast Refresh] done in 118ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48286594ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48286653ms] [LOG] [Fast Refresh] done in 59ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48286750ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48286752ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48286821ms] [LOG] [Fast Refresh] done in 71ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48286860ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48286899ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48286937ms] [LOG] [Fast Refresh] done in 38ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48286959ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48287007ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287044ms] [LOG] [Fast Refresh] done in 38ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287068ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48287116ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287158ms] [LOG] [Fast Refresh] done in 41ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287181ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48287222ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287273ms] [LOG] [Fast Refresh] done in 50ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287298ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48287342ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287392ms] [LOG] [Fast Refresh] done in 51ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287414ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48287454ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287490ms] [LOG] [Fast Refresh] done in 37ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287530ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48287572ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287631ms] [LOG] [Fast Refresh] done in 58ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287711ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48287721ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287786ms] [LOG] [Fast Refresh] done in 66ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48287815ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48288102ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48288126ms] [LOG] [Fast Refresh] done in 25ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48288337ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48288343ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48288442ms] [LOG] [Fast Refresh] done in 99ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48288483ms] [LOG] [Fast Refresh] done in 140ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48288518ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48288520ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48288864ms] [LOG] [Fast Refresh] done in 347ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48288886ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48288897ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48288988ms] [LOG] [Fast Refresh] done in 101ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48288998ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289046ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48289056ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289108ms] [LOG] [Fast Refresh] done in 52ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289130ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48289219ms] [LOG] [Fast Refresh] done in 163ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289222ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289230ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48289298ms] [LOG] [Fast Refresh] done in 75ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289323ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289329ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48289424ms] [LOG] [Fast Refresh] done in 101ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289430ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289474ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48289482ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289566ms] [LOG] [Fast Refresh] done in 84ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289636ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48289644ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289664ms] [LOG] [Fast Refresh] done in 21ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289673ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48289788ms] [LOG] [Fast Refresh] done in 144ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289792ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289803ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48289892ms] [LOG] [Fast Refresh] done in 100ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289902ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48289939ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48290000ms] [LOG] [Fast Refresh] done in 98ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290006ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290049ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48290066ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290083ms] [LOG] [Fast Refresh] done in 16ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290199ms] [LOG] [Fast Refresh] done in 133ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290203ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290209ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48290302ms] [LOG] [Fast Refresh] done in 100ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290318ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290330ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48290433ms] [LOG] [Fast Refresh] done in 115ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290445ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290496ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48290516ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290544ms] [LOG] [Fast Refresh] done in 29ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290666ms] [LOG] [Fast Refresh] done in 150ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290672ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290677ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48290780ms] [LOG] [Fast Refresh] done in 107ms @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48290870ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[48291555ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/next-devtools/shared/forward-logs-shared.js:27
+[48291603ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48291608ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/favicon.ico?603d046c9a6fdfbb:0
+[48291609ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3000/icons/icon-192x192.png:0
+[48291610ms] [WARNING] Error while trying to use the following icon from the Manifest: http://localhost:3000/icons/icon-192x192.png (Download error or resource isn't a valid image) @ http://localhost:3000/login:0
+[48292610ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48293612ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48294609ms] [WARNING] The resource http://localhost:3000/_next/static/media/4cf2300e9c8272f7-s.p.woff2?v=1778660545544 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[48294610ms] [WARNING] The resource http://localhost:3000/_next/static/media/93f479601ee12b01-s.p.woff2?v=1778660545544 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3000/login:0
+[48294614ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48295615ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48296617ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48301620ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48306622ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48311623ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48316625ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48321627ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48326629ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59
+[48331632ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=kqTJnpVs5KLUgP4Vt9pf4' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/web-socket.js:59

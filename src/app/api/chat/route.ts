@@ -9,14 +9,13 @@ import {
   saveEmotionDataServer,
   searchMemoriesServer,
 } from "@/lib/supabase/db-server";
-import { createServiceClient } from "@/lib/supabase/server";
-import type { AISettings, Message } from "@/types";
+import { createServiceClient, getAuthenticatedUser } from "@/lib/supabase/server";
+import type { AISettings, Memory, Message } from "@/types";
 
 type ChatRequestBody = {
   userMessage: string;
   history: Message[];
   aiSettings: AISettings;
-  userId: string;
   sessionId: string;
 };
 
@@ -25,10 +24,16 @@ function validateBody(body: Partial<ChatRequestBody>): body is ChatRequestBody {
     body.userMessage &&
       body.userMessage.trim().length > 0 &&
       body.aiSettings &&
-      body.userId &&
       body.sessionId &&
       Array.isArray(body.history)
   );
+}
+
+function getErrorStatus(message: string) {
+  if (message.includes("authorization token")) {
+    return 401;
+  }
+  return message.includes("ECONNREFUSED") ? 503 : 500;
 }
 
 export const runtime = "nodejs";
@@ -40,15 +45,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
     }
 
+    const user = await getAuthenticatedUser(request.headers.get("authorization"));
     const serviceClient = createServiceClient();
     const queryEmbedding = await generateEmbedding(body.userMessage);
-    const memories = await searchMemoriesServer(body.userId, queryEmbedding, 3, serviceClient);
+    const memories = await searchMemoriesServer(user.id, queryEmbedding, 3, serviceClient);
 
     const systemPrompt = buildSystemPrompt(body.aiSettings, memories);
     const messages = buildMessages(systemPrompt, body.history, body.userMessage);
 
     const userMessageId = await saveChatMessageServer(
-      body.userId,
+      user.id,
       body.sessionId,
       {
         id: "",
@@ -59,7 +65,7 @@ export async function POST(request: NextRequest) {
       serviceClient
     );
     await saveEmbeddingServer(
-      body.userId,
+      user.id,
       userMessageId,
       body.userMessage,
       "user",
@@ -71,7 +77,7 @@ export async function POST(request: NextRequest) {
     const { content, emotion } = parseEmotionFromResponse(rawResponse);
 
     const assistantMessageId = await saveChatMessageServer(
-      body.userId,
+      user.id,
       body.sessionId,
       {
         id: "",
@@ -85,20 +91,20 @@ export async function POST(request: NextRequest) {
 
     const responseEmbedding = await generateEmbedding(content);
     await saveEmbeddingServer(
-      body.userId,
+      user.id,
       assistantMessageId,
       content,
       "assistant",
       responseEmbedding,
       serviceClient
     );
-    await saveEmotionDataServer(body.userId, emotion, serviceClient);
+    await saveEmotionDataServer(user.id, emotion, serviceClient);
 
     return NextResponse.json({ content, emotion, memoriesUsed: memories.length });
   } catch (error) {
+    console.error("Chat API Error:", error);
     const message = error instanceof Error ? error.message : "Internal server error";
-    const status = message.includes("ECONNREFUSED") ? 503 : 500;
-    return NextResponse.json({ error: message }, { status });
+    return NextResponse.json({ error: message }, { status: getErrorStatus(message) });
   }
 }
 
@@ -111,14 +117,24 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
     }
 
+    const user = await getAuthenticatedUser(request.headers.get("authorization"));
     const serviceClient = createServiceClient();
-    const queryEmbedding = await generateEmbedding(body.userMessage);
-    const memories = await searchMemoriesServer(body.userId, queryEmbedding, 3, serviceClient);
+
+    let queryEmbedding: number[] | null = null;
+    let memories: Memory[] = [];
+
+    try {
+      queryEmbedding = await generateEmbedding(body.userMessage);
+      memories = await searchMemoriesServer(user.id, queryEmbedding, 3, serviceClient);
+    } catch (embeddingError) {
+      console.warn("Embedding generation or search failed (PUT):", embeddingError);
+    }
+
     const systemPrompt = buildSystemPrompt(body.aiSettings, memories);
     const messages = buildMessages(systemPrompt, body.history, body.userMessage);
 
     const userMessageId = await saveChatMessageServer(
-      body.userId,
+      user.id,
       body.sessionId,
       {
         id: "",
@@ -128,14 +144,21 @@ export async function PUT(request: NextRequest) {
       },
       serviceClient
     );
-    await saveEmbeddingServer(
-      body.userId,
-      userMessageId,
-      body.userMessage,
-      "user",
-      queryEmbedding,
-      serviceClient
-    );
+
+    if (queryEmbedding) {
+      try {
+        await saveEmbeddingServer(
+          user.id,
+          userMessageId,
+          body.userMessage,
+          "user",
+          queryEmbedding,
+          serviceClient
+        );
+      } catch (e) {
+        console.warn("Saving user embedding failed (PUT):", e);
+      }
+    }
 
     let fullContent = "";
 
@@ -149,7 +172,7 @@ export async function PUT(request: NextRequest) {
 
           const { content, emotion } = parseEmotionFromResponse(fullContent);
           const assistantMessageId = await saveChatMessageServer(
-            body.userId,
+            user.id,
             body.sessionId,
             {
               id: "",
@@ -161,25 +184,30 @@ export async function PUT(request: NextRequest) {
             serviceClient
           );
 
-          const responseEmbedding = await generateEmbedding(content);
-          await saveEmbeddingServer(
-            body.userId,
-            assistantMessageId,
-            content,
-            "assistant",
-            responseEmbedding,
-            serviceClient
-          );
-          await saveEmotionDataServer(body.userId, emotion, serviceClient);
+          try {
+            const responseEmbedding = await generateEmbedding(content);
+            await saveEmbeddingServer(
+              user.id,
+              assistantMessageId,
+              content,
+              "assistant",
+              responseEmbedding,
+              serviceClient
+            );
+          } catch (e) {
+            console.warn("Saving assistant embedding failed (PUT):", e);
+          }
+
+          await saveEmotionDataServer(user.id, emotion, serviceClient);
 
           controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({ done: true, emotion, memoriesUsed: memories.length })}\n\n`)
+            encoder.encode(`data: ${JSON.stringify({ done: true, content, emotion, memoriesUsed: memories.length })}\n\n`)
           );
           controller.close();
         } catch (error) {
           const message = error instanceof Error ? error.message : "Streaming failed.";
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({ error: message })}\n\n`));
-          controller.error(error);
+          controller.close();
         }
       },
     });
@@ -193,6 +221,6 @@ export async function PUT(request: NextRequest) {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Internal server error";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: message }, { status: getErrorStatus(message) });
   }
 }

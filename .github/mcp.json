@@ -40,10 +40,7 @@
     },
     "supabase": {
       "type": "http",
-      "url": "https://mcp.supabase.com/mcp",
-      "headers": {
-        "Authorization": "Bearer 2b8b9e49-b935-49b9-8703-6e0db82e90dd"
-      },
+      "url": "https://mcp.supabase.com/mcp?project_ref=fnkpgiikjitchdlikigr&read_only=true&features=docs%2Cdatabase%2Cdebugging%2Cdevelopment",
       "tools": [
         "*"]
     },

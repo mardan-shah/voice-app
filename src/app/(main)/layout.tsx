@@ -22,11 +22,11 @@ export default function MainLayout({ children }: PropsWithChildren) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex h-screen flex-col overflow-hidden bg-slate-50 dark:bg-[#080b12]">
       <Navbar />
-      <div className="flex flex-1 flex-col md:flex-row">
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
         <Sidebar />
-        <main className="flex-1 bg-zinc-50 p-4 dark:bg-black md:p-6">{children}</main>
+        <main className="min-h-0 flex-1 overflow-hidden">{children}</main>
       </div>
     </div>
   );

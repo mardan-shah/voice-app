@@ -12,6 +12,7 @@ interface ChatState {
   addUserMessage: (content: string) => Message;
   addAssistantMessage: (content: string, emotion: Emotion) => void;
   appendToLastMessage: (token: string) => void;
+  finalizeLastMessage: (content: string, emotion: Emotion) => void;
   setGenerating: (value: boolean) => void;
   setEmotion: (emotion: Emotion) => void;
   setMemoriesUsed: (value: number) => void;
@@ -68,6 +69,17 @@ export const useChatStore = create<ChatState>((set) => ({
       }
 
       return { messages };
+    });
+  },
+
+  finalizeLastMessage: (content, emotion) => {
+    set((state) => {
+      const messages = [...state.messages];
+      const last = messages[messages.length - 1];
+      if (last?.role === "assistant") {
+        messages[messages.length - 1] = { ...last, content, emotion };
+      }
+      return { messages, currentEmotion: emotion };
     });
   },
 

@@ -2,6 +2,7 @@
 
 import { useCallback } from "react";
 
+import { createClient } from "@/lib/supabase/client";
 import { useAuthStore } from "@/store/authStore";
 import { useChatStore } from "@/store/chatStore";
 import { useSettingsStore } from "@/store/settingsStore";
@@ -14,8 +15,8 @@ export function useChat() {
     addUserMessage,
     addAssistantMessage,
     appendToLastMessage,
+    finalizeLastMessage,
     setGenerating,
-    setEmotion,
     setMemoriesUsed,
     sessionId,
   } = useChatStore();
@@ -32,14 +33,24 @@ export function useChat() {
       setGenerating(true);
 
       try {
+        const supabase = createClient();
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (!session?.access_token) {
+          throw new Error("Your session has expired. Please log in again.");
+        }
+
         const response = await fetch("/api/chat", {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({
             userMessage: content,
             history: messages.slice(-10),
             aiSettings,
-            userId: user.id,
             sessionId,
           }),
         });
@@ -79,6 +90,7 @@ export function useChat() {
             const payload = eventBlock.slice(5).trim();
             const parsed = JSON.parse(payload) as {
               token?: string;
+              content?: string;
               done?: boolean;
               emotion?: Emotion;
               memoriesUsed?: number;
@@ -91,8 +103,8 @@ export function useChat() {
             if (parsed.token) {
               appendToLastMessage(parsed.token);
             }
-            if (parsed.done && parsed.emotion) {
-              setEmotion(parsed.emotion);
+            if (parsed.done && parsed.emotion && parsed.content !== undefined) {
+              finalizeLastMessage(parsed.content, parsed.emotion);
             }
             if (parsed.memoriesUsed !== undefined) {
               setMemoriesUsed(parsed.memoriesUsed);
@@ -111,10 +123,10 @@ export function useChat() {
       addUserMessage,
       aiSettings,
       appendToLastMessage,
+      finalizeLastMessage,
       isGenerating,
       messages,
       sessionId,
-      setEmotion,
       setGenerating,
       setMemoriesUsed,
       user,

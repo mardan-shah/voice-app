@@ -1,30 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
-import { createServiceClient } from "@/lib/supabase/server";
+import { createServiceClient, getAuthenticatedUser } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
 export async function DELETE(request: NextRequest) {
-  const authHeader = request.headers.get("authorization");
-  if (!authHeader?.startsWith("Bearer ")) {
-    return NextResponse.json({ error: "Missing authorization token." }, { status: 401 });
-  }
-
-  const accessToken = authHeader.slice("Bearer ".length).trim();
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) {
-    return NextResponse.json({ error: "Missing Supabase environment variables." }, { status: 500 });
-  }
-
-  const anonClient = createSupabaseClient(url, anonKey);
-  const {
-    data: { user },
-    error: userError,
-  } = await anonClient.auth.getUser(accessToken);
-  if (userError || !user) {
-    return NextResponse.json({ error: "Invalid authorization token." }, { status: 401 });
+  let user;
+  try {
+    user = await getAuthenticatedUser(request.headers.get("authorization"));
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Invalid authorization token.";
+    const status = message.includes("authorization token") ? 401 : 500;
+    return NextResponse.json({ error: message }, { status });
   }
 
   const serviceClient = createServiceClient();
