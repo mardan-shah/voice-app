@@ -1139,6 +1139,7 @@ Copy `.env.example` to `.env.local` and provide values.
 | --- | --- | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Browser and server | Yes | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Browser and server | Yes | Public Supabase key for browser auth and RLS-protected queries |
+| `NEXT_PUBLIC_SITE_URL` | Browser and server | Yes | Public app origin used for Supabase email redirects. Production: `https://voice.haizra.com` |
 | `SUPABASE_SECRET_KEY` | Server only | Yes | Privileged Supabase key for server persistence and account deletion |
 | `FIELDWAVES_API_URL` | Server only | Yes | Remote generation endpoint, normally ending in `/api/generate` |
 | `FIELDWAVES_USERNAME` | Server only | Yes | Basic Auth username for the AI endpoint |
@@ -1154,6 +1155,7 @@ Example:
 ```dotenv
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+NEXT_PUBLIC_SITE_URL=https://voice.haizra.com
 SUPABASE_SECRET_KEY=
 
 FIELDWAVES_API_URL=https://ai.fieldwaves.com/api/generate

@@ -2,6 +2,10 @@
   "name": "voice-app",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22 <23",
+    "npm": ">=10"
+  },
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",

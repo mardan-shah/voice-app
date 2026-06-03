@@ -1,6 +1,10 @@
 import { createClient } from "./client";
 
 function getOrigin() {
+  const configuredOrigin = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "");
+  if (configuredOrigin) {
+    return configuredOrigin;
+  }
   return typeof window !== "undefined" ? window.location.origin : "";
 }
 
