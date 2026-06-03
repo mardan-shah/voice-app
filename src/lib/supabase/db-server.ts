@@ -12,6 +12,16 @@ type MemoryRow = {
   created_at: string;
 };
 
+type AuthenticatedAppUser = {
+  id: string;
+  email?: string;
+  user_metadata?: {
+    username?: string;
+    full_name?: string;
+    name?: string;
+  };
+};
+
 function toMemory(row: MemoryRow): Memory {
   return {
     content: row.content,
@@ -23,6 +33,42 @@ function toMemory(row: MemoryRow): Memory {
 
 function getServiceClient(client?: SupabaseClient) {
   return client ?? createServiceClient();
+}
+
+export async function ensureUserDataServer(user: AuthenticatedAppUser, client?: SupabaseClient) {
+  const supabase = getServiceClient(client);
+  const username =
+    user.user_metadata?.username ||
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    user.email?.split("@")[0] ||
+    "User";
+
+  const { error: userError } = await supabase.from("users").upsert(
+    {
+      id: user.id,
+      email: user.email ?? "",
+      username,
+    },
+    { onConflict: "id" }
+  );
+  if (userError) {
+    throw userError;
+  }
+
+  const { error: aiSettingsError } = await supabase
+    .from("ai_settings")
+    .upsert({ user_id: user.id }, { onConflict: "user_id", ignoreDuplicates: true });
+  if (aiSettingsError) {
+    throw aiSettingsError;
+  }
+
+  const { error: voiceSettingsError } = await supabase
+    .from("voice_settings")
+    .upsert({ user_id: user.id }, { onConflict: "user_id", ignoreDuplicates: true });
+  if (voiceSettingsError) {
+    throw voiceSettingsError;
+  }
 }
 
 export async function saveChatMessageServer(

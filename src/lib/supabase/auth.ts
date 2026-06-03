@@ -1,15 +1,19 @@
 import { createClient } from "./client";
 
+function getOrigin() {
+  return typeof window !== "undefined" ? window.location.origin : "";
+}
+
 export async function signUp(email: string, password: string, username: string) {
   const supabase = createClient();
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const origin = getOrigin();
 
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: { username },
-      emailRedirectTo: `${origin}/auth/callback`,
+      emailRedirectTo: `${origin}/auth/confirm?next=/chat`,
     },
   });
   if (error) {
@@ -21,12 +25,12 @@ export async function signUp(email: string, password: string, username: string) 
 
 export async function resendSignupConfirmation(email: string) {
   const supabase = createClient();
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const origin = getOrigin();
   const { error } = await supabase.auth.resend({
     type: "signup",
     email,
     options: {
-      emailRedirectTo: `${origin}/auth/callback`,
+      emailRedirectTo: `${origin}/auth/confirm?next=/chat`,
     },
   });
   if (error) {
@@ -43,9 +47,10 @@ export async function logIn(email: string, password: string) {
   return data.user;
 }
 
+/*
 export async function signInWithGoogle() {
   const supabase = createClient();
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const origin = getOrigin();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -56,6 +61,26 @@ export async function signInWithGoogle() {
     throw error;
   }
   return data;
+}
+*/
+
+export async function requestPasswordReset(email: string) {
+  const supabase = createClient();
+  const origin = getOrigin();
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${origin}/auth/confirm?next=/reset-password`,
+  });
+  if (error) {
+    throw error;
+  }
+}
+
+export async function updatePassword(password: string) {
+  const supabase = createClient();
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) {
+    throw error;
+  }
 }
 
 export async function logOut() {

@@ -81,6 +81,7 @@ export async function getAISettings(userId: string): Promise<AISettings | null> 
 export async function updateAISettings(userId: string, settings: Partial<AISettings>) {
   const supabase = createClient();
   const payload: Record<string, unknown> = {
+    user_id: userId,
     updated_at: new Date().toISOString(),
   };
 
@@ -90,7 +91,7 @@ export async function updateAISettings(userId: string, settings: Partial<AISetti
   if (settings.formality !== undefined) payload.formality = settings.formality;
   if (settings.thinkingMode !== undefined) payload.thinking_mode = settings.thinkingMode;
 
-  const { error } = await supabase.from("ai_settings").update(payload).eq("user_id", userId);
+  const { error } = await supabase.from("ai_settings").upsert(payload, { onConflict: "user_id" });
   if (error) {
     throw error;
   }
@@ -113,6 +114,7 @@ export async function getVoiceSettings(userId: string): Promise<VoiceSettings | 
 export async function updateVoiceSettings(userId: string, settings: Partial<VoiceSettings>) {
   const supabase = createClient();
   const payload: Record<string, unknown> = {
+    user_id: userId,
     updated_at: new Date().toISOString(),
   };
 
@@ -122,7 +124,7 @@ export async function updateVoiceSettings(userId: string, settings: Partial<Voic
   if (settings.voiceName !== undefined) payload.voice_name = settings.voiceName;
   if (settings.language !== undefined) payload.language = settings.language;
 
-  const { error } = await supabase.from("voice_settings").update(payload).eq("user_id", userId);
+  const { error } = await supabase.from("voice_settings").upsert(payload, { onConflict: "user_id" });
   if (error) {
     throw error;
   }

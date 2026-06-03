@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { useAuth } from "@/hooks/useAuth";
-import { logIn, signInWithGoogle } from "@/lib/supabase/auth";
+import { logIn } from "@/lib/supabase/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,7 +17,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -37,17 +36,6 @@ export default function LoginPage() {
       setError(caughtError instanceof Error ? caughtError.message : "Unable to sign in.");
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    setError(null);
-    setIsGoogleSubmitting(true);
-    try {
-      await signInWithGoogle();
-    } catch (caughtError) {
-      setError(caughtError instanceof Error ? caughtError.message : "Unable to sign in with Google.");
-      setIsGoogleSubmitting(false);
     }
   };
 
@@ -72,31 +60,18 @@ export default function LoginPage() {
           required
         />
         {error ? <p className="text-sm text-red-600">{error}</p> : null}
-        <Button type="submit" className="w-full" disabled={isSubmitting || isGoogleSubmitting}>
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>
       </form>
 
-      <div className="relative my-6">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-zinc-200 dark:border-zinc-800" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white dark:bg-zinc-950 px-2 text-zinc-500">Or continue with</span>
-        </div>
-      </div>
-
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full"
-        onClick={handleGoogleSignIn}
-        disabled={isSubmitting || isGoogleSubmitting}
-      >
-        {isGoogleSubmitting ? "Connecting..." : "Google"}
-      </Button>
-
       <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
+        <Link href="/forgot-password" className="text-blue-600 hover:underline">
+          Forgot your password?
+        </Link>
+      </p>
+
+      <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">
         Don&apos;t have an account?{" "}
         <Link href="/signup" className="text-blue-600 hover:underline">
           Create one

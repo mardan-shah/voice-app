@@ -5,15 +5,25 @@ const MODEL = process.env.FIELDWAVES_MODEL ?? "gemma4:e2b";
 
 type FieldwavesResponse = {
   response?: string;
+  message?: {
+    content?: string;
+  };
+  done?: boolean;
   error?: string;
 };
 
 function parseChunk(line: string) {
-  const data = JSON.parse(line) as FieldwavesResponse;
+  const trimmed = line.trim();
+  const payload = trimmed.startsWith("data:") ? trimmed.slice(5).trim() : trimmed;
+  if (!payload || payload === "[DONE]") {
+    return "";
+  }
+
+  const data = JSON.parse(payload) as FieldwavesResponse;
   if (data.error) {
     throw new Error(data.error);
   }
-  return data.response ?? "";
+  return data.response ?? data.message?.content ?? "";
 }
 
 /**
@@ -41,6 +51,11 @@ export async function chatWithOllama(
       model: MODEL,
       prompt: prompt,
       stream: true,
+      options: {
+        temperature: 0.7,
+        top_p: 0.9,
+        num_predict: 320,
+      },
     }),
   });
 

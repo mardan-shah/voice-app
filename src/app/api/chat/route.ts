@@ -4,6 +4,7 @@ import { chatWithOllama } from "@/lib/ollama/client";
 import { generateEmbedding } from "@/lib/ollama/embeddings";
 import { buildMessages, buildSystemPrompt, parseEmotionFromResponse } from "@/lib/ollama/promptBuilder";
 import {
+  ensureUserDataServer,
   saveChatMessageServer,
   saveEmbeddingServer,
   saveEmotionDataServer,
@@ -47,6 +48,7 @@ export async function POST(request: NextRequest) {
 
     const user = await getAuthenticatedUser(request.headers.get("authorization"));
     const serviceClient = createServiceClient();
+    await ensureUserDataServer(user, serviceClient);
     const queryEmbedding = await generateEmbedding(body.userMessage);
     const memories = await searchMemoriesServer(user.id, queryEmbedding, 3, serviceClient);
 
@@ -119,6 +121,7 @@ export async function PUT(request: NextRequest) {
 
     const user = await getAuthenticatedUser(request.headers.get("authorization"));
     const serviceClient = createServiceClient();
+    await ensureUserDataServer(user, serviceClient);
 
     let queryEmbedding: number[] | null = null;
     let memories: Memory[] = [];
