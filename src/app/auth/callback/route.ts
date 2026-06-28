@@ -3,6 +3,9 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+import { ensureUserDataServer } from "@/lib/supabase/db-server";
+import { createServiceClient } from "@/lib/supabase/server";
+
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
@@ -32,8 +35,12 @@ export async function GET(request: NextRequest) {
         },
       }
     );
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      const user = data.user ?? data.session?.user;
+      if (user) {
+        await ensureUserDataServer(user, createServiceClient());
+      }
       return NextResponse.redirect(`${origin}/chat`);
     }
   }

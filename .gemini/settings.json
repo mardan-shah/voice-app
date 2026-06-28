@@ -29,7 +29,7 @@
       ]
     },
     "supabase": {
-      "url": "https://mcp.supabase.com/mcp?project_ref=fnkpgiikjitchdlikigr&read_only=true&features=docs%2Cdatabase%2Cdebugging%2Cdevelopment",
+      "url": "https://mcp.supabase.com/mcp?project_ref=jkneivjzvjwnmywfdbwh",
       "type": "http"
     },
     "nextjs-docs-mcp": {

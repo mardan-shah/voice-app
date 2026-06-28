@@ -1,11 +1,18 @@
-const FIELDWAVES_URL = process.env.FIELDWAVES_API_URL ?? "https://ai.fieldwaves.com/api/generate";
-const USERNAME = process.env.FIELDWAVES_USERNAME ?? "mardan";
-const PASSWORD = process.env.FIELDWAVES_PASSWORD ?? "";
-const EMBED_MODEL =
-  process.env.FIELDWAVES_EMBED_MODEL ?? process.env.OLLAMA_EMBED_MODEL ?? "nomic-embed-text";
+function envOrDefault(name: string, fallback: string) {
+  const value = process.env[name]?.trim();
+  return value || fallback;
+}
 
-// Derive embeddings endpoint from generate endpoint
-const BASE_URL = FIELDWAVES_URL.replace("/api/generate", "");
+const FIELDWAVES_URL = envOrDefault("FIELDWAVES_API_URL", "https://ai.fieldwaves.com/api/generate");
+const USERNAME = envOrDefault("FIELDWAVES_USERNAME", "mardan");
+const PASSWORD = process.env.FIELDWAVES_PASSWORD ?? "";
+const EMBED_MODEL = envOrDefault(
+  "FIELDWAVES_EMBED_MODEL",
+  envOrDefault("OLLAMA_EMBED_MODEL", "nomic-embed-text")
+);
+
+// Derive embeddings endpoint from the configured generation endpoint.
+const BASE_URL = FIELDWAVES_URL.replace(/\/api\/generate\/?$/, "");
 let embeddingsUnavailable = false;
 
 type EmbeddingResponse = {

@@ -1,7 +1,12 @@
-const FIELDWAVES_URL = process.env.FIELDWAVES_API_URL ?? "https://ai.fieldwaves.com/api/generate";
-const USERNAME = process.env.FIELDWAVES_USERNAME ?? "mardan";
+function envOrDefault(name: string, fallback: string) {
+  const value = process.env[name]?.trim();
+  return value || fallback;
+}
+
+const FIELDWAVES_URL = envOrDefault("FIELDWAVES_API_URL", "https://ai.fieldwaves.com/api/generate");
+const USERNAME = envOrDefault("FIELDWAVES_USERNAME", "mardan");
 const PASSWORD = process.env.FIELDWAVES_PASSWORD ?? "";
-const MODEL = process.env.FIELDWAVES_MODEL ?? "gemma4:e2b";
+const MODEL = envOrDefault("FIELDWAVES_MODEL", "gemma4:e2b");
 
 type FieldwavesResponse = {
   response?: string;

@@ -158,7 +158,6 @@ The current repository does not include:
 - Server-hosted speech synthesis.
 - Automated end-to-end test suite.
 - Rate limiting.
-- A completed automated database bootstrap trigger for new user profiles.
 
 ### 4.3 System boundary
 
@@ -320,7 +319,7 @@ happy | sad | angry | anxious | neutral | excited
 | Preconditions | The visitor is not logged in. Supabase Auth is configured. |
 | Main flow | The visitor opens `/signup`, enters username, email, and matching passwords, then submits the form. The browser calls Supabase Auth signup. If email confirmation is enabled, the UI asks the user to check their email. |
 | Alternative flow | The visitor chooses Google login and is redirected through the OAuth provider. |
-| Postcondition | A Supabase auth account exists. Application profile initialization must also be configured; see [Current Limitations](#25-current-limitations). |
+| Postcondition | A Supabase auth account exists and the application profile/settings rows are initialized by the database trigger or auth callback provisioning path. |
 
 ### UC-02: Log in
 
@@ -1218,14 +1217,14 @@ supabase/schema.sql
 
 The schema:
 
-1. Enables the `vector` extension.
+1. Enables the `pgcrypto` and `vector` extensions.
 2. Creates application tables.
 3. Creates the vector index.
 4. Creates the `match_memories` RPC.
-5. Enables RLS.
-6. Creates ownership policies.
-
-Important: new-user profile initialization still requires an additional trigger or equivalent setup. See [Current Limitations](#25-current-limitations).
+5. Creates the new-user profile/settings bootstrap trigger.
+6. Grants the Data API privileges required by the browser and server roles.
+7. Enables RLS.
+8. Creates ownership policies.
 
 ### 22.5 Configure Supabase Auth
 
@@ -1386,16 +1385,14 @@ The repository currently does not include an automated test suite. This is a kno
 
 This section separates implemented behavior from intended behavior.
 
-### 25.1 New-user profile bootstrap is incomplete in the checked-in schema
+### 25.1 Existing databases may need the latest schema reapplied
 
-`supabase/schema.sql` creates `public.users`, `public.ai_settings`, and `public.voice_settings`, but it does not define a trigger that inserts those rows after a new `auth.users` record is created.
+`supabase/schema.sql` now includes the trigger that inserts `public.users`, `public.ai_settings`, and `public.voice_settings` rows after a new `auth.users` record is created.
 
 Impact:
 
-- Chat persistence references `public.users`.
-- Personality updates expect an existing `ai_settings` row.
-- Voice updates expect an existing `voice_settings` row.
-- A fresh Supabase deployment needs an additional profile-bootstrap trigger, a server-side provisioning route, or manual seed rows.
+- Fresh deployments should apply the current schema before testing signup.
+- Older Supabase databases created from a previous schema revision need this schema change applied before relying on automatic profile/settings initialization.
 
 ### 25.2 Memory depends on the embedding model
 
@@ -1531,8 +1528,8 @@ Potential future features:
 4. **Database**: show the ER diagram and explain RLS plus `pgvector`.
 5. **Live demo**: log in, send a typed question, show streaming, use the microphone, change personality, and open history.
 6. **Security**: explain why the publishable key can be public and why secret credentials remain server-only.
-7. **Limitations**: state the profile-bootstrap, validation, rate-limiting, and automated-test gaps clearly.
-8. **Future work**: describe onboarding automation, tests, observability, and stronger resource controls.
+7. **Limitations**: state the validation, rate-limiting, and automated-test gaps clearly.
+8. **Future work**: describe tests, observability, and stronger resource controls.
 
 ### 27.2 Suggested live-demo script
 
