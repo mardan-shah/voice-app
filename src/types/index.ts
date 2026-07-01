@@ -18,6 +18,14 @@ export interface Message {
   emotion?: Emotion;
 }
 
+export interface ChatTab {
+  id: string;
+  title: string;
+  messages: Message[];
+  sessionId: string;
+  createdAt: Date;
+}
+
 export interface AISettings {
   id: string;
   userId: string;
@@ -31,11 +39,28 @@ export interface AISettings {
 export interface VoiceSettings {
   id: string;
   userId: string;
+  provider: "elevenlabs";
   pitch: number;
   rate: number;
   volume: number;
   voiceName: string;
+  voiceId: string;
+  modelId: string;
   language: string;
+  stability: number;
+  similarityBoost: number;
+  style: number;
+  speakerBoost: boolean;
+  speed: number;
+}
+
+export interface VoiceOption {
+  voiceId: string;
+  name: string;
+  category: string;
+  description: string;
+  previewUrl: string;
+  labels: Record<string, string>;
 }
 
 export interface Memory {

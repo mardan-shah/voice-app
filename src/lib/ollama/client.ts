@@ -3,19 +3,53 @@ function envOrDefault(name: string, fallback: string) {
   return value || fallback;
 }
 
-const FIELDWAVES_URL = envOrDefault("FIELDWAVES_API_URL", "https://ai.fieldwaves.com/api/generate");
-const USERNAME = envOrDefault("FIELDWAVES_USERNAME", "mardan");
-const PASSWORD = process.env.FIELDWAVES_PASSWORD ?? "";
-const MODEL = envOrDefault("FIELDWAVES_MODEL", "gemma4:e2b");
+function normalizeBaseUrl(value: string) {
+  return value.replace(/\/+$/, "");
+}
 
-type FieldwavesResponse = {
+function isLocalBaseUrl(value: string) {
+  try {
+    const hostname = new URL(value).hostname;
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+  } catch {
+    return false;
+  }
+}
+
+const BASE_URL = normalizeBaseUrl(
+  envOrDefault("OLLAMA_CLOUD_BASE_URL", envOrDefault("OLLAMA_BASE_URL", "https://ollama.com"))
+);
+const API_KEY = process.env.OLLAMA_CLOUD_API_KEY?.trim() || process.env.OLLAMA_API_KEY?.trim() || "";
+const MODEL = envOrDefault("OLLAMA_CHAT_MODEL", envOrDefault("OLLAMA_MODEL", "gemma4:31b"));
+
+type OllamaStreamResponse = {
   response?: string;
   message?: {
     content?: string;
   };
+  choices?: {
+    delta?: {
+      content?: string;
+    };
+    message?: {
+      content?: string;
+    };
+  }[];
   done?: boolean;
   error?: string;
 };
+
+function getAuthHeaders(): Record<string, string> {
+  if (API_KEY) {
+    return { Authorization: `Bearer ${API_KEY}` };
+  }
+
+  if (isLocalBaseUrl(BASE_URL)) {
+    return {};
+  }
+
+  throw new Error("Missing OLLAMA_CLOUD_API_KEY for Ollama Cloud.");
+}
 
 function parseChunk(line: string) {
   const trimmed = line.trim();
@@ -24,37 +58,35 @@ function parseChunk(line: string) {
     return "";
   }
 
-  const data = JSON.parse(payload) as FieldwavesResponse;
+  const data = JSON.parse(payload) as OllamaStreamResponse;
   if (data.error) {
     throw new Error(data.error);
   }
-  return data.response ?? data.message?.content ?? "";
+  return (
+    data.response ??
+    data.message?.content ??
+    data.choices?.[0]?.delta?.content ??
+    data.choices?.[0]?.message?.content ??
+    ""
+  );
 }
 
 /**
- * Chat with Fieldwaves AI API.
- * Replaces the previous Ollama implementation as requested.
+ * Chat with Ollama Cloud or an explicitly configured Ollama-compatible host.
  */
 export async function chatWithOllama(
   messages: { role: string; content: string }[],
   onToken?: (token: string) => void
 ): Promise<string> {
-  // Convert chat messages to a single prompt string for the generation endpoint
-  const prompt = messages
-    .map((m) => `${m.role.toUpperCase()}: ${m.content}`)
-    .join("\n\n") + "\n\nASSISTANT:";
-
-  const auth = Buffer.from(`${USERNAME}:${PASSWORD}`).toString("base64");
-
-  const response = await fetch(FIELDWAVES_URL, {
+  const response = await fetch(`${BASE_URL}/api/chat`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Basic ${auth}`,
+      ...getAuthHeaders(),
     },
     body: JSON.stringify({
       model: MODEL,
-      prompt: prompt,
+      messages,
       stream: true,
       options: {
         temperature: 0.7,
@@ -66,11 +98,11 @@ export async function chatWithOllama(
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Fieldwaves AI failed: ${response.status} ${errorText}`);
+    throw new Error(`Ollama chat failed: ${response.status} ${errorText}`);
   }
 
   if (!response.body) {
-    throw new Error("Fieldwaves AI returned an empty response stream.");
+    throw new Error("Ollama chat returned an empty response stream.");
   }
 
   const reader = response.body.getReader();
@@ -110,7 +142,7 @@ export async function chatWithOllama(
   }
 
   if (!content) {
-    throw new Error("Fieldwaves AI returned an empty response.");
+    throw new Error("Ollama chat returned an empty response.");
   }
 
   return content;

@@ -9,6 +9,7 @@ import { useSettingsStore } from "@/store/settingsStore";
 export function useVoice() {
   const { voiceSettings } = useSettingsStore();
   const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const hydrated = useSyncExternalStore(
     () => () => undefined,
     () => true,
@@ -43,7 +44,12 @@ export function useVoice() {
       if (!textToSpeech) {
         throw new Error("Voice output is still initializing.");
       }
-      await textToSpeech.speak(text, voiceSettings);
+      setIsSpeaking(true);
+      try {
+        await textToSpeech.speak(text, voiceSettings);
+      } finally {
+        setIsSpeaking(false);
+      }
     },
     [textToSpeech, voiceSettings]
   );
@@ -51,11 +57,14 @@ export function useVoice() {
   return {
     supported: hydrated ? (speechToText?.supported ?? false) : null,
     isListening,
-    isSpeaking: textToSpeech?.isSpeaking ?? false,
+    isSpeaking,
     startListening,
     stopListening,
     speak,
-    stopSpeaking: () => textToSpeech?.stop(),
+    stopSpeaking: () => {
+      textToSpeech?.stop();
+      setIsSpeaking(false);
+    },
     voices: textToSpeech?.getAvailableVoices() ?? [],
   };
 }

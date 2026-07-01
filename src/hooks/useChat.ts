@@ -10,7 +10,8 @@ import type { Emotion } from "@/types";
 
 export function useChat() {
   const {
-    messages,
+    tabs,
+    activeTabId,
     isGenerating,
     addUserMessage,
     addAssistantMessage,
@@ -18,15 +19,26 @@ export function useChat() {
     finalizeLastMessage,
     setGenerating,
     setMemoriesUsed,
-    sessionId,
+    updateTabTitle,
   } = useChatStore();
+  
   const { aiSettings } = useSettingsStore();
   const { user } = useAuthStore();
 
+  const activeTab = tabs.find((t) => t.id === activeTabId);
+  const messages = activeTab?.messages ?? [];
+  const sessionId = activeTab?.sessionId ?? "";
+
   const sendMessage = useCallback(
-    async (content: string) => {
-      if (!content.trim() || isGenerating || !user) {
-        return;
+    async (content: string): Promise<string | undefined> => {
+      if (!content.trim() || isGenerating || !user || !activeTabId) {
+        return undefined;
+      }
+
+      // If it's the very first message in the tab, generate a title
+      if (messages.length === 0) {
+        const title = content.length > 25 ? `${content.substring(0, 25)}...` : content;
+        updateTabTitle(activeTabId, title);
       }
 
       addUserMessage(content);
@@ -66,6 +78,7 @@ export function useChat() {
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let buffer = "";
+        let finalContent: string | undefined = undefined;
 
         while (true) {
           const { done, value } = await reader.read();
@@ -105,20 +118,25 @@ export function useChat() {
             }
             if (parsed.done && parsed.emotion && parsed.content !== undefined) {
               finalizeLastMessage(parsed.content, parsed.emotion);
+              finalContent = parsed.content;
             }
             if (parsed.memoriesUsed !== undefined) {
               setMemoriesUsed(parsed.memoriesUsed);
             }
           }
         }
+        
+        return finalContent;
       } catch (error) {
         const message = error instanceof Error ? error.message : "Unexpected chat error.";
         addAssistantMessage(`Error: ${message}`, "neutral");
+        return undefined;
       } finally {
         setGenerating(false);
       }
     },
     [
+      activeTabId,
       addAssistantMessage,
       addUserMessage,
       aiSettings,
@@ -129,9 +147,10 @@ export function useChat() {
       sessionId,
       setGenerating,
       setMemoriesUsed,
+      updateTabTitle,
       user,
     ]
   );
 
-  return { messages, isGenerating, sendMessage };
+  return { messages, isGenerating, activeTabId, sendMessage };
 }

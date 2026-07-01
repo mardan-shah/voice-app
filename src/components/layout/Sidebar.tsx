@@ -9,7 +9,6 @@ const navItems = [
   { href: "/chat", label: "Chat", icon: "✦" },
   { href: "/personality", label: "Personality", icon: "◇" },
   { href: "/voice-settings", label: "Voice", icon: "◉" },
-  { href: "/history", label: "History", icon: "↺" },
 ];
 
 export function Sidebar() {

@@ -6,15 +6,19 @@ This document describes the current implementation of the AI Chat Companion in
 `voice-app`. It is intended to be the primary engineering handoff, deployment
 reference, and troubleshooting guide for the project.
 
+Provider update: the current application path uses Ollama Cloud for chat and
+embeddings, plus ElevenLabs for generated voice output. Older VPS, Traefik, and
+Fieldwaves notes in this document are historical deployment context, not the
+active provider configuration.
+
 The application is a personalized browser-based AI companion with:
 
 - Email/password and Google OAuth authentication through Supabase Auth.
 - A configurable companion personality.
-- AI-generated responses from Gemma 4 E2B running behind a private Ollama
-  server.
+- AI-generated responses from Gemma through Ollama Cloud.
 - Long-term semantic memory stored in Supabase Postgres with `pgvector`.
 - Emotion tagging derived from the user's message.
-- Browser-based microphone input and browser-based text-to-speech output.
+- Browser-based microphone input and ElevenLabs text-to-speech output.
 - Progressive Web App (PWA) metadata and generated service worker support.
 
 ## Verified state
@@ -26,17 +30,17 @@ The following behavior was manually verified on **May 31, 2026**:
 | Supabase Auth | Working | `/auth/v1/health` returned HTTP `200` and GoTrue `v2.189.0`. |
 | Supabase application tables | Working | `chat_history`, `emotion_data`, `message_embeddings`, `ai_settings`, and `voice_settings` are reachable with the server key. |
 | Supabase memory RPC | Working | `match_memories` accepted a 768-dimensional test vector and returned an empty result for a nonexistent user. |
-| Traefik Basic Auth | Working | `https://ai.fieldwaves.com/api/tags` accepted the configured credentials. |
-| Remote Ollama | Working | Ollama reported version `0.23.2`. |
-| Remote chat model | Working | `gemma4:e2b` is installed and returned `Gemma is working` from `/api/generate`. |
+| Ollama Cloud | Requires new keys | Configure `OLLAMA_CLOUD_API_KEY` and `OLLAMA_CHAT_MODEL`. |
+| Remote chat model | Working slug found | Default model is `gemma4:31b` for the current Ollama Cloud account. |
 | Embedding endpoint | API path fixed | The app now calls `/api/embed`, which is the current Ollama endpoint. |
-| Embedding model | Requires VPS setup | `nomic-embed-text` was not installed when checked. Run `ollama pull nomic-embed-text` on the VPS. |
+| Embedding model | Requires provider availability | `OLLAMA_EMBED_MODEL` must return 768-dimensional vectors for the current schema. |
+| ElevenLabs | Requires new keys | Configure `ELEVENLABS_API_KEY` and `ELEVENLABS_DEFAULT_VOICE_ID`. |
 | Lint | Passing | `npm run lint` passes. |
 | TypeScript | Passing | `npx tsc --noEmit` passes. |
 
 Normal AI chat works without the embedding model because the streaming chat
 route treats semantic memory recall as optional. Long-term memory search remains
-disabled until `nomic-embed-text` is installed on the VPS.
+disabled until `OLLAMA_EMBED_MODEL` is available and returns 768-dimensional vectors.
 
 ## Stack summary
 
@@ -51,12 +55,11 @@ disabled until `nomic-embed-text` is installed on the VPS.
 | Vector search | `pgvector` | Semantic memory similarity search |
 | Browser SSR auth adapter | `@supabase/ssr` | Cookie storage and token refresh |
 | Browser database client | `@supabase/supabase-js` | RLS-protected settings and history queries |
-| AI inference server | Ollama `0.23.2` | Gemma response generation and embeddings |
-| Chat model | `gemma4:e2b` | Companion responses |
+| AI inference server | Ollama Cloud | Gemma response generation and embeddings |
+| Chat model | `gemma4:31b` | Companion responses |
 | Embedding model | `nomic-embed-text` | 768-dimensional semantic memory vectors |
-| AI reverse proxy | Traefik managed by Dokploy | HTTPS termination and Basic Auth |
 | Voice input | Browser Web Speech API | Speech-to-text microphone capture |
-| Voice output | Browser Speech Synthesis API | Text-to-speech output |
+| Voice output | ElevenLabs | Text-to-speech audio generation |
 | PWA | `next-pwa` and web manifest | Installable application metadata and generated service worker |
 
 ## System context
@@ -68,21 +71,22 @@ flowchart LR
     Next["Next.js application server<br/>Route handlers + Proxy"]
     SupabaseAuth["Supabase Auth"]
     SupabaseDB["Supabase Postgres<br/>RLS + pgvector"]
-    Traefik["Traefik on VPS<br/>TLS + Basic Auth"]
-    Ollama["Ollama 0.23.2<br/>VPS port 11434"]
-    Gemma["gemma4:e2b"]
+    Ollama["Ollama Cloud<br/>Bearer auth"]
+    Eleven["ElevenLabs<br/>xi-api-key"]
+    Gemma["gemma4:31b"]
     Embed["nomic-embed-text"]
-    Speech["Browser Web Speech APIs"]
+    Speech["Browser SpeechRecognition"]
 
     User --> Browser
-    Browser <--> Speech
+    Browser --> Speech
     Browser -->|"HTTPS /api/chat"| Next
+    Browser -->|"HTTPS /api/voice/speak"| Next
     Browser -->|"Auth and RLS data requests"| SupabaseAuth
     Browser -->|"RLS-protected settings and history"| SupabaseDB
     Next -->|"Verify access token"| SupabaseAuth
     Next -->|"Privileged server-side persistence"| SupabaseDB
-    Next -->|"HTTPS + Basic Auth"| Traefik
-    Traefik -->|"http://172.19.0.1:11434"| Ollama
+    Next -->|"HTTPS + Bearer token"| Ollama
+    Next -->|"HTTPS + xi-api-key"| Eleven
     Ollama --> Gemma
     Ollama --> Embed
 ```
@@ -94,14 +98,15 @@ flowchart TB
     subgraph PublicBrowser["Public browser environment"]
         UI["React UI"]
         BrowserSupabase["Supabase browser client<br/>publishable key only"]
-        Voice["Microphone + speech synthesis"]
+        Voice["Microphone capture<br/>audio playback"]
     end
 
     subgraph NextServer["Trusted Next.js server environment"]
         ChatRoute["/api/chat"]
+        VoiceRoute["/api/voice/*"]
         DeleteRoute["/api/account/delete"]
         Secret["SUPABASE_SECRET_KEY"]
-        AICreds["FIELDWAVES_USERNAME<br/>FIELDWAVES_PASSWORD"]
+        ProviderCreds["OLLAMA_CLOUD_API_KEY<br/>ELEVENLABS_API_KEY"]
     end
 
     subgraph Supabase["Supabase managed environment"]
@@ -109,27 +114,30 @@ flowchart TB
         DB["Postgres + RLS + pgvector"]
     end
 
-    subgraph VPS["Private VPS environment"]
-        Traefik["Traefik Basic Auth"]
-        Ollama["Ollama"]
+    subgraph Providers["Provider APIs"]
+        Ollama["Ollama Cloud"]
+        Eleven["ElevenLabs"]
     end
 
     UI --> BrowserSupabase
     UI --> Voice
     UI --> ChatRoute
+    UI --> VoiceRoute
     BrowserSupabase --> Auth
     BrowserSupabase --> DB
     ChatRoute --> Auth
     ChatRoute --> Secret
-    ChatRoute --> AICreds
+    ChatRoute --> ProviderCreds
     ChatRoute --> DB
-    ChatRoute --> Traefik
-    Traefik --> Ollama
+    ChatRoute --> Ollama
+    VoiceRoute --> Auth
+    VoiceRoute --> ProviderCreds
+    VoiceRoute --> Eleven
 ```
 
 The publishable Supabase key is intentionally available to the browser. The
-Supabase secret key and Fieldwaves Basic Auth password must remain server-only.
-Never expose either secret through a `NEXT_PUBLIC_` variable.
+Supabase secret key, Ollama Cloud API key, and ElevenLabs API key must remain
+server-only. Never expose provider secrets through a `NEXT_PUBLIC_` variable.
 
 ## Repository layout
 
@@ -154,11 +162,12 @@ voice-app/
 │   │   ├── useAuth.ts              # Browser session projection
 │   │   ├── useChat.ts              # Streaming chat client
 │   │   ├── usePersonality.ts       # Personality persistence
-│   │   └── useVoice.ts             # Browser speech controllers
+│   │   └── useVoice.ts             # Speech input and audio output lifecycle
 │   ├── lib/
+│   │   ├── elevenlabs/             # Server-side ElevenLabs client
 │   │   ├── ollama/                 # AI generation, embeddings, prompt builder
 │   │   ├── supabase/               # Browser, server, Proxy, and DB helpers
-│   │   ├── voice/                  # Speech-to-text and text-to-speech wrappers
+│   │   ├── voice/                  # Speech-to-text, audio playback, voice defaults
 │   │   └── utils.ts
 │   ├── store/                      # Zustand stores
 │   ├── types/                      # Shared TypeScript definitions
@@ -185,15 +194,23 @@ voice-app/
 | `/chat` | Client page | Main companion chat UI with automatic voice output. |
 | `/history` | Client page | Displays up to 50 persisted chat messages grouped by date. |
 | `/personality` | Client page | Configures companion name, humor, tone, formality, and thinking mode. |
-| `/voice-settings` | Client page | Configures browser voice, language, pitch, rate, and volume. |
+| `/voice-settings` | Client page | Configures ElevenLabs voice ID, model, voice settings, language, and playback volume. |
 | `/api/chat` | Route handler | Handles AI chat requests. `PUT` is used by the UI for streamed SSE delivery. |
+| `/api/voice/voices` | Route handler | Lists ElevenLabs voices through a protected server route. |
+| `/api/voice/speak` | Route handler | Generates ElevenLabs speech audio through a protected server route. |
 | `/api/account/delete` | Route handler | Deletes the authenticated Supabase user through the server secret key. |
 
 ## Deployment topology
 
-The application talks to Ollama through `https://ai.fieldwaves.com`. Ollama is
-not directly exposed to the public internet. Traefik terminates TLS and requires
-Basic Auth before forwarding traffic to the host Ollama service.
+The active provider topology is direct server-to-provider HTTPS:
+
+- Next.js calls Ollama Cloud at `OLLAMA_CLOUD_BASE_URL` with bearer auth.
+- Next.js calls ElevenLabs at `ELEVENLABS_API_URL` with `xi-api-key`.
+- Browser code never receives provider API keys.
+
+The VPS/Fieldwaves topology below is retained only as legacy deployment context.
+
+### Legacy VPS topology
 
 ```mermaid
 flowchart LR
@@ -299,12 +316,15 @@ environment in the deployment platform.
 | `NEXT_PUBLIC_SUPABASE_URL` | Browser and server | Yes | Supabase project URL. |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Browser and server | Yes | Public Supabase key for browser auth and RLS-protected database access. |
 | `SUPABASE_SECRET_KEY` | Server only | Yes | Privileged Supabase key for server-side persistence and account deletion. |
-| `FIELDWAVES_API_URL` | Server only | Yes | Remote Ollama generation URL. Default: `https://ai.fieldwaves.com/api/generate`. |
-| `FIELDWAVES_USERNAME` | Server only | Yes | Traefik Basic Auth username. |
-| `FIELDWAVES_PASSWORD` | Server only | Yes | Traefik Basic Auth plaintext password. |
-| `FIELDWAVES_MODEL` | Server only | Yes | Chat generation model. Default: `gemma4:e2b`. |
-| `FIELDWAVES_EMBED_MODEL` | Server only | Yes for memory | Embedding model. Default: `nomic-embed-text`. |
-| `OLLAMA_EMBED_MODEL` | Server only | Compatibility fallback | Legacy embedding model variable. Prefer `FIELDWAVES_EMBED_MODEL`. |
+| `OLLAMA_CLOUD_BASE_URL` | Server only | Yes | Ollama Cloud base URL. Default: `https://ollama.com`. |
+| `OLLAMA_CLOUD_API_KEY` | Server only | Yes | Ollama Cloud bearer token. |
+| `OLLAMA_CHAT_MODEL` | Server only | Yes | Chat generation model. Default: `gemma4:31b`. |
+| `OLLAMA_EMBED_MODEL` | Server only | Yes for memory | Embedding model returning 768 dimensions. Default: `nomic-embed-text`. |
+| `ELEVENLABS_API_URL` | Server only | Yes | ElevenLabs API URL. Default: `https://api.elevenlabs.io`. |
+| `ELEVENLABS_API_KEY` | Server only | Yes | ElevenLabs API key. |
+| `ELEVENLABS_DEFAULT_VOICE_ID` | Server only | Yes | Fallback voice ID for users without a saved voice. |
+| `ELEVENLABS_MODEL_ID` | Server only | Yes | ElevenLabs TTS model. Default: `eleven_multilingual_v2`. |
+| `ELEVENLABS_OUTPUT_FORMAT` | Server only | Yes | Audio format. Default: `mp3_44100_128`. |
 
 Example:
 
@@ -313,11 +333,16 @@ NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 SUPABASE_SECRET_KEY=
 
-FIELDWAVES_API_URL=https://ai.fieldwaves.com/api/generate
-FIELDWAVES_USERNAME=mardan
-FIELDWAVES_PASSWORD=
-FIELDWAVES_MODEL=gemma4:e2b
-FIELDWAVES_EMBED_MODEL=nomic-embed-text
+OLLAMA_CLOUD_BASE_URL=https://ollama.com
+OLLAMA_CLOUD_API_KEY=
+OLLAMA_CHAT_MODEL=gemma4:31b
+OLLAMA_EMBED_MODEL=nomic-embed-text
+
+ELEVENLABS_API_URL=https://api.elevenlabs.io
+ELEVENLABS_API_KEY=
+ELEVENLABS_DEFAULT_VOICE_ID=
+ELEVENLABS_MODEL_ID=eleven_multilingual_v2
+ELEVENLABS_OUTPUT_FORMAT=mp3_44100_128
 ```
 
 ## Authentication architecture
@@ -401,7 +426,8 @@ sequenceDiagram
     participant API as PUT /api/chat
     participant Auth as Supabase Auth
     participant DB as Supabase Postgres
-    participant Ollama as Remote Ollama via Traefik
+    participant Ollama as Ollama Cloud
+    participant Voice as ElevenLabs voice route
 
     User->>UI: Send typed text or microphone transcript
     UI->>UI: Add local user message
@@ -421,15 +447,16 @@ sequenceDiagram
     end
     API->>API: Build companion prompt
     API->>DB: Save user chat message
-    API->>Ollama: POST /api/generate with gemma4:e2b
-    Ollama-->>API: Generated response
+    API->>Ollama: POST /api/chat with configured model
+    Ollama-->>API: Streamed response chunks
     API-->>UI: SSE data event containing response token/chunk
     API->>DB: Save assistant message and emotion
     API->>Ollama: POST /api/embed for assistant response
     API->>DB: Save assistant embedding if available
     API-->>UI: SSE done event with emotion and memoriesUsed
     UI->>UI: Display response
-    UI->>UI: Speak response with browser speech synthesis
+    UI->>Voice: POST /api/voice/speak when voice output is enabled
+    Voice-->>UI: Audio stream for browser playback
 ```
 
 ### SSE payloads
@@ -446,7 +473,7 @@ data: {"done":true,"emotion":"neutral","memoriesUsed":2}
 If generation fails after streaming begins:
 
 ```text
-data: {"error":"Fieldwaves AI failed: ..."}
+data: {"error":"Ollama chat failed: ..."}
 
 ```
 
@@ -455,7 +482,7 @@ assistant message.
 
 ### Ollama NDJSON streaming
 
-Ollama `/api/generate` returns newline-delimited JSON (NDJSON) chunks while a
+Ollama `/api/chat` returns newline-delimited JSON (NDJSON) chunks while a
 response is being generated. The server-side AI client:
 
 1. Explicitly requests `stream: true`.
@@ -488,7 +515,7 @@ flowchart TD
     History["Last 10 chat messages"]
     Prompt["System prompt"]
     Messages["Model messages"]
-    Gemma["gemma4:e2b"]
+    Gemma["gemma4:31b"]
     Parser["Parse EMOTION_DETECTED suffix"]
     Output["Visible response + emotion"]
 
@@ -527,21 +554,21 @@ For a new user message:
 5. Ask Gemma to use those facts naturally without explicitly announcing memory
    retrieval.
 
-### Required VPS model
+### Required embedding model
 
-Install the embedding model on the VPS:
+Confirm the configured embedding model is available through Ollama Cloud:
 
 ```bash
-ollama pull nomic-embed-text
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" https://ollama.com/api/tags
 ```
 
 Test the endpoint:
 
 ```bash
-curl -u "mardan:YOUR_PASSWORD" \
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"model":"nomic-embed-text","input":"health check"}' \
-  https://ai.fieldwaves.com/api/embed
+  https://ollama.com/api/embed
 ```
 
 Expected result: JSON containing an `embeddings` array.
@@ -665,8 +692,9 @@ access token and derives the user ID server-side.
 
 ## Voice architecture
 
-Voice is implemented entirely in the browser. The VPS does not generate audio
-and does not receive microphone recordings.
+Voice input is implemented in the browser. Voice output is generated by
+ElevenLabs through a protected Next.js route; the provider API key remains
+server-only. The application server does not receive raw microphone recordings.
 
 ```mermaid
 flowchart LR
@@ -676,7 +704,8 @@ flowchart LR
     Chat["Chat UI"]
     API["/api/chat"]
     Gemma["Gemma response text"]
-    TTS["SpeechSynthesis API"]
+    VoiceAPI["/api/voice/speak"]
+    TTS["ElevenLabs TTS"]
     Speaker["Device speaker"]
 
     User --> Mic
@@ -685,7 +714,8 @@ flowchart LR
     Chat --> API
     API --> Gemma
     Gemma -->|"assistant text"| Chat
-    Chat --> TTS
+    Chat --> VoiceAPI
+    VoiceAPI --> TTS
     TTS --> Speaker
 ```
 
@@ -713,17 +743,17 @@ The microphone button is implemented in `src/components/chat/MicButton.tsx`.
 `src/lib/voice/textToSpeech.ts` wraps:
 
 ```text
-window.speechSynthesis
-SpeechSynthesisUtterance
+POST /api/voice/speak
+HTMLAudioElement playback
 ```
 
 Behavior:
 
 - Speaks each completed assistant message automatically.
-- Uses available voices installed or exposed by the user's browser and OS.
+- Uses the saved ElevenLabs voice ID or the server default voice ID.
 - Removes common Markdown formatting before speech.
-- Supports configured voice name, language, pitch, rate, and volume.
-- Cancels any prior speech before speaking a new response.
+- Supports configured model ID, stability, similarity, style, speaker boost, speed, and volume.
+- Cancels any prior audio before speaking a new response.
 
 ### Browser requirements
 
@@ -732,11 +762,11 @@ Voice support depends on the user's browser and device:
 | Feature | Requirement |
 | --- | --- |
 | Microphone input | Browser support for Web Speech recognition and microphone permission |
-| Text-to-speech | Browser support for speech synthesis and at least one system voice |
+| Text-to-speech | Valid ElevenLabs server configuration and browser audio playback |
 | Production microphone access | HTTPS origin |
 | Recommended desktop browsers | Current Chrome or Edge |
 
-The voice settings page includes a `Test voice` button for local browser
+The voice settings page includes a `Test voice` button for configured ElevenLabs
 verification.
 
 ## State management
@@ -812,38 +842,36 @@ Fill in all required values described in the environment table.
 Run `supabase/schema.sql` against the Supabase project using the SQL editor or an
 approved migration workflow.
 
-### 4. Install VPS Ollama models
+### 4. Verify Ollama Cloud access
 
-On the VPS:
+Confirm the configured account can see models:
 
 ```bash
-ollama pull gemma4:e2b
-ollama pull nomic-embed-text
-ollama list
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" https://ollama.com/api/tags
 ```
 
-### 5. Verify Traefik access
+### 5. Verify chat generation
 
 ```bash
-curl -u "mardan:YOUR_PASSWORD" https://ai.fieldwaves.com/api/tags
-```
-
-### 6. Verify chat generation
-
-```bash
-curl -u "mardan:YOUR_PASSWORD" \
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"model":"gemma4:e2b","prompt":"Reply with exactly: Gemma is working"}' \
-  https://ai.fieldwaves.com/api/generate
+  -d '{"model":"gemma4:31b","messages":[{"role":"user","content":"Reply with exactly: Gemma is working"}],"stream":false}' \
+  https://ollama.com/api/chat
 ```
 
-### 7. Verify embeddings
+### 6. Verify embeddings
 
 ```bash
-curl -u "mardan:YOUR_PASSWORD" \
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"model":"nomic-embed-text","input":"health check"}' \
-  https://ai.fieldwaves.com/api/embed
+  https://ollama.com/api/embed
+```
+
+### 7. Verify ElevenLabs voices
+
+```bash
+curl -H "xi-api-key: $ELEVENLABS_API_KEY" https://api.elevenlabs.io/v2/voices
 ```
 
 ### 8. Run locally
@@ -866,66 +894,47 @@ git diff --check
 ### Ollama model list
 
 ```bash
-curl -u "mardan:YOUR_PASSWORD" https://ai.fieldwaves.com/api/tags
-```
-
-### Ollama version
-
-```bash
-curl -u "mardan:YOUR_PASSWORD" https://ai.fieldwaves.com/api/version
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" https://ollama.com/api/tags
 ```
 
 ### Gemma generation
 
 ```bash
-curl -u "mardan:YOUR_PASSWORD" \
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"model":"gemma4:e2b","prompt":"Say ready"}' \
-  https://ai.fieldwaves.com/api/generate
+  -d '{"model":"gemma4:31b","messages":[{"role":"user","content":"Say ready"}],"stream":false}' \
+  https://ollama.com/api/chat
 ```
 
 ### Embedding generation
 
 ```bash
-curl -u "mardan:YOUR_PASSWORD" \
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"model":"nomic-embed-text","input":"Say ready"}' \
-  https://ai.fieldwaves.com/api/embed
+  https://ollama.com/api/embed
 ```
 
-### Traefik logs
-
-Find the Traefik container:
+### ElevenLabs voices
 
 ```bash
-docker ps --format '{{.Names}}' | grep -i traefik
-```
-
-Read recent logs:
-
-```bash
-docker logs --tail 100 dokploy-traefik
-```
-
-Only restart Traefik if dynamic config reload and logs indicate it is necessary:
-
-```bash
-docker restart dokploy-traefik
+curl -H "xi-api-key: $ELEVENLABS_API_KEY" https://api.elevenlabs.io/v2/voices
 ```
 
 ## Troubleshooting matrix
 
 | Symptom | Likely cause | Resolution |
 | --- | --- | --- |
-| `401 Unauthorized` from `ai.fieldwaves.com` | `.env` plaintext password does not match Traefik bcrypt hash | Generate a new hash with `htpasswd -nB mardan`, update `middlewares.yml`, and set the same plaintext password in `.env`. |
-| `/api/tags` works but `/api/generate` says model not found | Gemma model is absent on VPS | Run `ollama pull gemma4:e2b`. |
-| Chat works but memory count always remains zero | Embedding model absent or embedding request fails | Run `ollama pull nomic-embed-text`, then test `/api/embed`. |
-| `/api/embed` returns model not found | `nomic-embed-text` is not installed | Pull the model on the VPS. |
-| `/api/embeddings` returns `404` | Old Ollama endpoint | Use `/api/embed` with an `input` field. The app source has been updated accordingly. |
+| `401 Unauthorized` from Ollama Cloud | Missing or invalid `OLLAMA_CLOUD_API_KEY` | Regenerate the key and update the server environment. |
+| `/api/chat` says model not found | `OLLAMA_CHAT_MODEL` does not match the account's model slug | Confirm the slug with `/api/tags` and update `OLLAMA_CHAT_MODEL`. |
+| Chat works but memory count always remains zero | Embedding model absent, unavailable, or wrong dimensionality | Test `/api/embed`; use a model that returns 768-dimensional vectors or update the schema dimension. |
+| `/api/embed` returns model not found | `OLLAMA_EMBED_MODEL` is unavailable to the account | Pick an available embedding model and confirm its vector dimension. |
+| Voice output returns `Missing ELEVENLABS_DEFAULT_VOICE_ID` | No fallback voice configured and the user has not saved a voice ID | Set `ELEVENLABS_DEFAULT_VOICE_ID` or save a voice in `/voice-settings`. |
+| Voice output returns an ElevenLabs authorization error | Missing or invalid `ELEVENLABS_API_KEY` | Regenerate the key and update the server environment. |
 | User appears randomly logged out | Session refresh Proxy is missing or cookie forwarding is broken | Confirm `src/proxy.ts` is built and `src/lib/supabase/proxy.ts` forwards cookies and headers. |
 | Build reports `ƒ Proxy (Middleware)` missing | Next.js does not detect Proxy | Confirm `src/proxy.ts` exists at the same level as `src/app`. |
 | Microphone button says unsupported | Browser lacks Web Speech recognition support | Use current Chrome or Edge and confirm HTTPS plus microphone permission. |
-| Voice output is silent | Browser synthesis voice unavailable, muted device, or browser speech error | Open `/voice-settings`, select a voice, and use `Test voice`. |
+| Voice output is silent | Browser audio blocked, muted device, or provider audio request failed | Open `/voice-settings`, select a voice, and use `Test voice`. |
 | Google OAuth returns to login | Callback URL or Supabase provider configuration is incorrect | Confirm `/auth/callback` is allowed in Supabase Auth redirect URLs. |
 | Supabase requests fail after the project was paused | Supabase project has not resumed fully | Wait for resume completion and check `/auth/v1/health` with the publishable key. |
 | Build fails while fetching Google Fonts | Restricted network environment | Allow network access during `npm run build` or self-host fonts in a future hardening pass. |
@@ -936,8 +945,9 @@ docker restart dokploy-traefik
 
 - Browser code receives only the Supabase publishable key.
 - `SUPABASE_SECRET_KEY` remains server-only.
-- Fieldwaves Basic Auth credentials remain server-only.
-- Ollama sits behind Traefik HTTPS and Basic Auth.
+- `OLLAMA_CLOUD_API_KEY` remains server-only.
+- `ELEVENLABS_API_KEY` remains server-only.
+- Provider traffic uses HTTPS and provider authentication.
 - Chat requests verify the caller's Supabase token server-side.
 - Chat persistence uses the verified token-derived user ID.
 - Account deletion verifies the caller's token server-side.
@@ -947,14 +957,12 @@ docker restart dokploy-traefik
 ### Important operating rules
 
 - Never prefix the Supabase secret key with `NEXT_PUBLIC_`.
-- Never prefix `FIELDWAVES_PASSWORD` with `NEXT_PUBLIC_`.
+- Never prefix `OLLAMA_CLOUD_API_KEY` or `ELEVENLABS_API_KEY` with `NEXT_PUBLIC_`.
 - Never commit `.env`, `.env.local`, or plaintext passwords.
-- Never place the plaintext Fieldwaves password inside Traefik YAML.
-- Never place the bcrypt hash inside the application `.env`.
-- Rotate the Fieldwaves password if it is pasted into a public issue, shared
-  log, or committed file.
+- Rotate provider keys if they are pasted into a public issue, shared log, or
+  committed file.
 - Keep Supabase Auth redirect URLs restricted to trusted origins.
-- Keep Ollama inaccessible except through the authenticated Traefik router.
+- Keep provider API keys server-only and use authenticated HTTPS for all provider calls.
 
 ## Known limitations and recommended improvements
 
@@ -1021,7 +1029,7 @@ Add structured server logs for:
 - Supabase persistence errors.
 - SSE disconnects.
 
-Do not log access tokens, Basic Auth passwords, or full private chat content.
+Do not log access tokens, provider API keys, or full private chat content.
 
 ### Priority 7: improve voice portability
 
@@ -1057,32 +1065,37 @@ to the server when supported.
 If AI chat stops working:
 
 1. Check Supabase status and resume the project if paused.
-2. Check Traefik credentials:
+2. Check Ollama Cloud credentials:
 
    ```bash
-   curl -u "mardan:YOUR_PASSWORD" https://ai.fieldwaves.com/api/tags
+   curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" https://ollama.com/api/tags
    ```
 
-3. Confirm `gemma4:e2b` appears in the model list.
+3. Confirm the configured `OLLAMA_CHAT_MODEL` appears in the model list.
 4. Send a direct Gemma test request:
 
    ```bash
-   curl -u "mardan:YOUR_PASSWORD" \
+   curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" \
      -H "Content-Type: application/json" \
-     -d '{"model":"gemma4:e2b","prompt":"Say ready"}' \
-     https://ai.fieldwaves.com/api/generate
+     -d '{"model":"gemma4:31b","messages":[{"role":"user","content":"Say ready"}],"stream":false}' \
+     https://ollama.com/api/chat
    ```
 
 5. Check embeddings independently:
 
    ```bash
-   curl -u "mardan:YOUR_PASSWORD" \
+   curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" \
      -H "Content-Type: application/json" \
      -d '{"model":"nomic-embed-text","input":"health check"}' \
-     https://ai.fieldwaves.com/api/embed
+     https://ollama.com/api/embed
    ```
 
-6. Check Traefik logs if public AI requests fail before reaching Ollama.
+6. Check ElevenLabs voices:
+
+   ```bash
+   curl -H "xi-api-key: $ELEVENLABS_API_KEY" https://api.elevenlabs.io/v2/voices
+   ```
+
 7. Run local checks:
 
    ```bash
@@ -1091,5 +1104,5 @@ If AI chat stops working:
    npm run build
    ```
 
-This procedure isolates Supabase, Traefik authentication, Gemma inference,
-embedding inference, and application source failures independently.
+This procedure isolates Supabase, provider authentication, Gemma inference,
+embedding inference, voice-provider access, and application source failures independently.

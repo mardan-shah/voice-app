@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { DEFAULT_VOICE_SETTINGS, normalizeVoiceSettings } from "@/lib/voice/settings";
 import type { AISettings, VoiceSettings } from "@/types";
 
 const DEFAULT_AI_SETTINGS: AISettings = {
@@ -11,16 +12,6 @@ const DEFAULT_AI_SETTINGS: AISettings = {
   tone: "warm",
   formality: "casual",
   thinkingMode: false,
-};
-
-const DEFAULT_VOICE_SETTINGS: VoiceSettings = {
-  id: "",
-  userId: "",
-  pitch: 1,
-  rate: 1,
-  volume: 1,
-  voiceName: "",
-  language: "en-US",
 };
 
 interface SettingsState {
@@ -40,12 +31,20 @@ export const useSettingsStore = create<SettingsState>()(
       setAISettings: (aiSettings) => set({ aiSettings }),
       patchAISettings: (settings) =>
         set((state) => ({ aiSettings: { ...state.aiSettings, ...settings } })),
-      setVoiceSettings: (voiceSettings) => set({ voiceSettings }),
+      setVoiceSettings: (voiceSettings) => set({ voiceSettings: normalizeVoiceSettings(voiceSettings) }),
       patchVoiceSettings: (settings) =>
-        set((state) => ({ voiceSettings: { ...state.voiceSettings, ...settings } })),
+        set((state) => ({ voiceSettings: normalizeVoiceSettings({ ...state.voiceSettings, ...settings }) })),
     }),
     {
       name: "settings-store",
+      merge: (persistedState, currentState) => {
+        const persisted = persistedState as Partial<SettingsState> | undefined;
+        return {
+          ...currentState,
+          ...persisted,
+          voiceSettings: normalizeVoiceSettings(persisted?.voiceSettings),
+        };
+      },
     }
   )
 );

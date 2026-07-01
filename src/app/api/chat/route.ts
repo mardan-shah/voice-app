@@ -49,8 +49,16 @@ export async function POST(request: NextRequest) {
     const user = await getAuthenticatedUser(request.headers.get("authorization"));
     const serviceClient = createServiceClient();
     await ensureUserDataServer(user, serviceClient);
-    const queryEmbedding = await generateEmbedding(body.userMessage);
-    const memories = await searchMemoriesServer(user.id, queryEmbedding, 3, serviceClient);
+
+    let queryEmbedding: number[] | null = null;
+    let memories: Memory[] = [];
+
+    try {
+      queryEmbedding = await generateEmbedding(body.userMessage);
+      memories = await searchMemoriesServer(user.id, queryEmbedding, 3, serviceClient);
+    } catch (embeddingError) {
+      console.warn("Embedding generation or search failed (POST):", embeddingError);
+    }
 
     const systemPrompt = buildSystemPrompt(body.aiSettings, memories);
     const messages = buildMessages(systemPrompt, body.history, body.userMessage);
@@ -66,14 +74,20 @@ export async function POST(request: NextRequest) {
       },
       serviceClient
     );
-    await saveEmbeddingServer(
-      user.id,
-      userMessageId,
-      body.userMessage,
-      "user",
-      queryEmbedding,
-      serviceClient
-    );
+    if (queryEmbedding) {
+      try {
+        await saveEmbeddingServer(
+          user.id,
+          userMessageId,
+          body.userMessage,
+          "user",
+          queryEmbedding,
+          serviceClient
+        );
+      } catch (e) {
+        console.warn("Saving user embedding failed (POST):", e);
+      }
+    }
 
     const rawResponse = await chatWithOllama(messages);
     const { content, emotion } = parseEmotionFromResponse(rawResponse);
@@ -91,15 +105,19 @@ export async function POST(request: NextRequest) {
       serviceClient
     );
 
-    const responseEmbedding = await generateEmbedding(content);
-    await saveEmbeddingServer(
-      user.id,
-      assistantMessageId,
-      content,
-      "assistant",
-      responseEmbedding,
-      serviceClient
-    );
+    try {
+      const responseEmbedding = await generateEmbedding(content);
+      await saveEmbeddingServer(
+        user.id,
+        assistantMessageId,
+        content,
+        "assistant",
+        responseEmbedding,
+        serviceClient
+      );
+    } catch (e) {
+      console.warn("Saving assistant embedding failed (POST):", e);
+    }
     await saveEmotionDataServer(user.id, emotion, serviceClient);
 
     return NextResponse.json({ content, emotion, memoriesUsed: memories.length });

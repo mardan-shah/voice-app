@@ -3,16 +3,25 @@ function envOrDefault(name: string, fallback: string) {
   return value || fallback;
 }
 
-const FIELDWAVES_URL = envOrDefault("FIELDWAVES_API_URL", "https://ai.fieldwaves.com/api/generate");
-const USERNAME = envOrDefault("FIELDWAVES_USERNAME", "mardan");
-const PASSWORD = process.env.FIELDWAVES_PASSWORD ?? "";
-const EMBED_MODEL = envOrDefault(
-  "FIELDWAVES_EMBED_MODEL",
-  envOrDefault("OLLAMA_EMBED_MODEL", "nomic-embed-text")
-);
+function normalizeBaseUrl(value: string) {
+  return value.replace(/\/+$/, "");
+}
 
-// Derive embeddings endpoint from the configured generation endpoint.
-const BASE_URL = FIELDWAVES_URL.replace(/\/api\/generate\/?$/, "");
+function isLocalBaseUrl(value: string) {
+  try {
+    const hostname = new URL(value).hostname;
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+  } catch {
+    return false;
+  }
+}
+
+const BASE_URL = normalizeBaseUrl(
+  envOrDefault("OLLAMA_CLOUD_BASE_URL", envOrDefault("OLLAMA_BASE_URL", "https://ollama.com"))
+);
+const API_KEY = process.env.OLLAMA_CLOUD_API_KEY?.trim() || process.env.OLLAMA_API_KEY?.trim() || "";
+const EMBED_MODEL = envOrDefault("OLLAMA_EMBED_MODEL", "nomic-embed-text");
+
 let embeddingsUnavailable = false;
 
 type EmbeddingResponse = {
@@ -21,16 +30,26 @@ type EmbeddingResponse = {
   error?: string;
 };
 
+function getAuthHeaders(): Record<string, string> {
+  if (API_KEY) {
+    return { Authorization: `Bearer ${API_KEY}` };
+  }
+
+  if (isLocalBaseUrl(BASE_URL)) {
+    return {};
+  }
+
+  throw new Error("Missing OLLAMA_CLOUD_API_KEY for Ollama Cloud embeddings.");
+}
+
 export async function generateEmbedding(text: string): Promise<number[]> {
   if (embeddingsUnavailable) {
     throw new Error("Embedding endpoint is unavailable.");
   }
 
-  const auth = Buffer.from(`${USERNAME}:${PASSWORD}`).toString("base64");
-
-  const headers = {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    "Authorization": `Basic ${auth}`,
+    ...getAuthHeaders(),
   };
 
   const response = await fetch(`${BASE_URL}/api/embed`, {
@@ -43,31 +62,8 @@ export async function generateEmbedding(text: string): Promise<number[]> {
   });
 
   if (response.status === 404) {
-    const legacyResponse = await fetch(`${BASE_URL}/api/embeddings`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({
-        model: EMBED_MODEL,
-        prompt: text,
-      }),
-    });
-
-    if (legacyResponse.status === 404) {
-      embeddingsUnavailable = true;
-      throw new Error("Embedding endpoint is unavailable.");
-    }
-
-    if (!legacyResponse.ok) {
-      const errorText = await legacyResponse.text();
-      throw new Error(`Embedding request failed: ${legacyResponse.status} ${errorText}`);
-    }
-
-    const legacyData = (await legacyResponse.json()) as EmbeddingResponse;
-    const legacyEmbedding = legacyData.embedding ?? legacyData.embeddings?.[0];
-    if (!legacyEmbedding) {
-      throw new Error(legacyData.error ?? "Embedding response did not include a vector.");
-    }
-    return legacyEmbedding;
+    embeddingsUnavailable = true;
+    throw new Error("Embedding endpoint is unavailable.");
   }
 
   if (!response.ok) {
@@ -79,6 +75,11 @@ export async function generateEmbedding(text: string): Promise<number[]> {
   const embedding = data.embeddings?.[0] ?? data.embedding;
   if (!embedding) {
     throw new Error(data.error ?? "Embedding response did not include a vector.");
+  }
+  if (embedding.length !== 768) {
+    throw new Error(
+      `Embedding model ${EMBED_MODEL} returned ${embedding.length} dimensions; the database expects 768.`
+    );
   }
   return embedding;
 }

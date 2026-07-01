@@ -22,13 +22,31 @@ CREATE TABLE IF NOT EXISTS public.ai_settings (
 CREATE TABLE IF NOT EXISTS public.voice_settings (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES public.users(id) ON DELETE CASCADE UNIQUE,
+  provider TEXT DEFAULT 'elevenlabs',
   pitch FLOAT DEFAULT 1.0,
   rate FLOAT DEFAULT 1.0,
   volume FLOAT DEFAULT 1.0,
   voice_name TEXT DEFAULT '',
+  voice_id TEXT DEFAULT '',
+  voice_model_id TEXT DEFAULT '',
   language TEXT DEFAULT 'en-US',
+  stability FLOAT DEFAULT 0.5,
+  similarity_boost FLOAT DEFAULT 0.75,
+  style FLOAT DEFAULT 0.0,
+  speaker_boost BOOLEAN DEFAULT TRUE,
+  speed FLOAT DEFAULT 1.0,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+ALTER TABLE public.voice_settings
+  ADD COLUMN IF NOT EXISTS provider TEXT DEFAULT 'elevenlabs',
+  ADD COLUMN IF NOT EXISTS voice_id TEXT DEFAULT '',
+  ADD COLUMN IF NOT EXISTS voice_model_id TEXT DEFAULT '',
+  ADD COLUMN IF NOT EXISTS stability FLOAT DEFAULT 0.5,
+  ADD COLUMN IF NOT EXISTS similarity_boost FLOAT DEFAULT 0.75,
+  ADD COLUMN IF NOT EXISTS style FLOAT DEFAULT 0.0,
+  ADD COLUMN IF NOT EXISTS speaker_boost BOOLEAN DEFAULT TRUE,
+  ADD COLUMN IF NOT EXISTS speed FLOAT DEFAULT 1.0;
 
 CREATE TABLE IF NOT EXISTS public.chat_history (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,

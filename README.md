@@ -53,14 +53,15 @@
 
 AI Chat Companion is a browser-based conversational application designed to provide a more personal experience than a basic chatbot. A user can create an account, select a companion personality, send typed or spoken messages, receive streamed AI responses, hear responses spoken aloud, inspect prior conversations, and retain useful context across conversations through semantic memory.
 
-The application is implemented as a full-stack Next.js 16 project. The browser interface is built with React and Tailwind CSS. Supabase provides authentication and a PostgreSQL database. The PostgreSQL `pgvector` extension stores message embeddings and retrieves semantically similar past messages. The Next.js server communicates with a remote Ollama-compatible inference service through the Fieldwaves AI endpoint. Browser-native Web Speech APIs provide speech-to-text and text-to-speech functionality.
+The application is implemented as a full-stack Next.js 16 project. The browser interface is built with React and Tailwind CSS. Supabase provides authentication and a PostgreSQL database. The PostgreSQL `pgvector` extension stores message embeddings and retrieves semantically similar past messages. The Next.js server communicates with Ollama Cloud for chat generation and embeddings, and with ElevenLabs for text-to-speech audio. Browser-native Web Speech APIs provide speech-to-text microphone capture.
 
 The design intentionally separates public browser responsibilities from trusted server responsibilities:
 
-- The browser handles presentation, user interaction, local UI state, Supabase login, and browser speech APIs.
-- The Next.js server validates access tokens, protects privileged secrets, builds AI prompts, streams responses, and persists server-side chat data.
+- The browser handles presentation, user interaction, local UI state, Supabase login, microphone capture, and audio playback.
+- The Next.js server validates access tokens, protects privileged secrets, builds AI prompts, streams responses, creates speech audio, and persists server-side chat data.
 - Supabase stores user data and enforces Row Level Security (RLS).
-- The AI service generates text and vector embeddings.
+- Ollama Cloud generates text and vector embeddings.
+- ElevenLabs generates assistant speech audio.
 
 ### Key capabilities
 
@@ -72,7 +73,7 @@ The design intentionally separates public browser responsibilities from trusted 
 - Emotion classification for each assistant response.
 - Long-term semantic memory using 768-dimensional embeddings.
 - Voice input through browser speech recognition.
-- Voice output through browser speech synthesis.
+- Voice output through ElevenLabs text-to-speech.
 - Conversation history.
 - Account deletion.
 - PWA manifest and production service-worker generation.
@@ -166,8 +167,9 @@ The application depends on three external systems:
 | External system | Role |
 | --- | --- |
 | Supabase | Authentication, PostgreSQL storage, RLS, and vector search RPC |
-| Fieldwaves AI endpoint | Authenticated HTTP gateway to Ollama-compatible text generation and embeddings |
-| Browser Web Speech APIs | Speech recognition and speech synthesis on supported devices |
+| Ollama Cloud | Authenticated Ollama-compatible chat generation and embeddings |
+| ElevenLabs | Authenticated text-to-speech generation |
+| Browser Web Speech APIs | Speech recognition on supported devices |
 
 ---
 
@@ -296,7 +298,7 @@ happy | sad | angry | anxious | neutral | excited
 
 | ID | Category | Requirement | Implementation note |
 | --- | --- | --- | --- |
-| NFR-01 | Security | Privileged credentials shall remain server-only. | `SUPABASE_SECRET_KEY` and `FIELDWAVES_PASSWORD` do not use the `NEXT_PUBLIC_` prefix. |
+| NFR-01 | Security | Privileged credentials shall remain server-only. | `SUPABASE_SECRET_KEY`, `OLLAMA_CLOUD_API_KEY`, and `ELEVENLABS_API_KEY` do not use the `NEXT_PUBLIC_` prefix. |
 | NFR-02 | Privacy | One user shall not access another user's rows. | Supabase RLS policies constrain rows using `auth.uid()`. |
 | NFR-03 | Responsiveness | AI output should appear progressively during generation. | The API converts upstream NDJSON chunks into SSE events. |
 | NFR-04 | Availability | Chat should continue if optional semantic-memory generation fails. | The streamed route catches embedding and memory-search errors. |
@@ -336,7 +338,7 @@ happy | sad | angry | anxious | neutral | excited
 | Field | Description |
 | --- | --- |
 | Actor | Authenticated user |
-| Preconditions | A valid Supabase session exists. The Fieldwaves AI endpoint is reachable. |
+| Preconditions | A valid Supabase session exists. Ollama Cloud is reachable and configured. |
 | Main flow | The user submits text. The browser obtains the current access token and sends `PUT /api/chat`. The server validates the token, optionally searches memories, saves the user message, calls the AI service, emits SSE fragments, persists the assistant answer, stores emotion data, and emits a final SSE event. |
 | Alternative flow | If embeddings fail, generation continues without semantic memories. |
 | Failure flow | If token validation or AI generation fails, the user sees an error message. |
@@ -389,8 +391,8 @@ The project uses a layered full-stack architecture:
 2. **Client state layer**: Zustand stores and browser hooks.
 3. **Application server layer**: Next.js route handlers and Proxy.
 4. **Data layer**: Supabase Auth and PostgreSQL with RLS.
-5. **AI inference layer**: Remote Ollama-compatible API behind the Fieldwaves endpoint.
-6. **Device capability layer**: Browser Web Speech APIs.
+5. **AI inference layer**: Ollama Cloud chat and embedding APIs.
+6. **Voice layer**: Browser speech recognition plus ElevenLabs text-to-speech.
 
 ### 9.2 System context diagram
 
@@ -398,24 +400,25 @@ The project uses a layered full-stack architecture:
 flowchart LR
     User["End user"]
     Browser["Browser UI<br/>React + Zustand"]
-    Speech["Browser Web Speech APIs"]
+    Speech["Browser SpeechRecognition"]
     Next["Next.js server<br/>Route handlers + Proxy"]
     Auth["Supabase Auth"]
     DB["Supabase Postgres<br/>RLS + pgvector"]
-    Gateway["Fieldwaves AI gateway<br/>HTTPS + Basic Auth"]
-    Ollama["Ollama-compatible inference"]
-    ChatModel["gemma4:e2b"]
+    Ollama["Ollama Cloud<br/>Bearer auth"]
+    Eleven["ElevenLabs TTS<br/>xi-api-key"]
+    ChatModel["gemma4:31b"]
     EmbedModel["nomic-embed-text"]
 
     User --> Browser
-    Browser <--> Speech
+    Browser --> Speech
     Browser -->|"Auth requests"| Auth
     Browser -->|"RLS-protected queries"| DB
     Browser -->|"PUT /api/chat"| Next
+    Browser -->|"POST /api/voice/speak"| Next
     Next -->|"Verify token"| Auth
     Next -->|"Privileged persistence"| DB
-    Next -->|"Generate + embed"| Gateway
-    Gateway --> Ollama
+    Next -->|"Generate + embed"| Ollama
+    Next -->|"Speech audio"| Eleven
     Ollama --> ChatModel
     Ollama --> EmbedModel
 ```
@@ -427,13 +430,13 @@ flowchart TB
     subgraph Public["Public browser environment"]
         UI["React UI"]
         BrowserKey["Supabase publishable key"]
-        Voice["Microphone and speaker APIs"]
+        Voice["Microphone capture and audio playback"]
     end
 
     subgraph Trusted["Trusted Next.js server"]
         Routes["Route handlers"]
         Secret["SUPABASE_SECRET_KEY"]
-        AICreds["FIELDWAVES_USERNAME<br/>FIELDWAVES_PASSWORD"]
+        AICreds["OLLAMA_CLOUD_API_KEY<br/>ELEVENLABS_API_KEY"]
     end
 
     subgraph Managed["Supabase managed environment"]
@@ -511,13 +514,13 @@ flowchart TD
 
 | Capability | Technology | Notes |
 | --- | --- | --- |
-| Text generation | Ollama-compatible `/api/generate` endpoint | Accessed through `FIELDWAVES_API_URL` |
-| Chat model | `gemma4:e2b` | Configurable with `FIELDWAVES_MODEL` |
-| Embeddings | Ollama-compatible `/api/embed` endpoint | Derived from the generation base URL |
+| Text generation | Ollama Cloud `/api/chat` endpoint | Accessed through `OLLAMA_CLOUD_BASE_URL` |
+| Chat model | `gemma4:31b` | Configurable with `OLLAMA_CHAT_MODEL` |
+| Embeddings | Ollama Cloud `/api/embed` endpoint | Uses the same Ollama Cloud base URL |
 | Embedding model | `nomic-embed-text` | Produces vectors expected by the schema as `vector(768)` |
 | Streaming transport | NDJSON upstream, SSE downstream | Next.js converts AI chunks into browser-friendly SSE events |
 | Voice input | `SpeechRecognition` / `webkitSpeechRecognition` | Browser-dependent |
-| Voice output | `speechSynthesis` / `SpeechSynthesisUtterance` | Browser and OS voice-dependent |
+| Voice output | ElevenLabs `/v1/text-to-speech/:voice_id/stream` | Server-side API key, browser audio playback |
 
 ### 10.3 Why these technologies were selected
 
@@ -530,7 +533,8 @@ flowchart TD
 | `pgvector` | Enables semantic memory retrieval without adding a separate vector database. |
 | Zustand | Keeps local state management small and direct. |
 | SSE | Fits one-way incremental AI output with a simple browser streaming implementation. |
-| Web Speech APIs | Add voice features without uploading raw microphone recordings to the application server. |
+| Web Speech APIs | Add voice input without uploading raw microphone recordings to the application server. |
+| ElevenLabs | Provides consistent voice output independent of the browser or operating-system voice list. |
 
 ### 10.4 Important Next.js 16 conventions
 
@@ -707,7 +711,7 @@ sequenceDiagram
     participant API as PUT /api/chat
     participant Auth as Supabase Auth
     participant DB as Supabase Postgres
-    participant AI as Fieldwaves AI endpoint
+    participant AI as Ollama Cloud
 
     User->>UI: Submit typed text or microphone transcript
     UI->>UI: Add local user message
@@ -760,7 +764,7 @@ data: {"done":true,"content":"completed response","emotion":"neutral","memoriesU
 If streaming fails after the response begins:
 
 ```text
-data: {"error":"Fieldwaves AI failed: ..."}
+data: {"error":"Ollama chat failed: ..."}
 
 ```
 
@@ -895,7 +899,8 @@ flowchart LR
     STT["Browser SpeechRecognition"]
     Chat["Chat UI"]
     API["PUT /api/chat"]
-    TTS["Browser speechSynthesis"]
+    VoiceAPI["POST /api/voice/speak"]
+    TTS["ElevenLabs TTS"]
     Speaker["Device speaker"]
 
     User --> Mic
@@ -903,7 +908,8 @@ flowchart LR
     STT -->|"Transcript text"| Chat
     Chat --> API
     API -->|"Assistant text"| Chat
-    Chat --> TTS
+    Chat --> VoiceAPI
+    VoiceAPI --> TTS
     TTS --> Speaker
 ```
 
@@ -929,17 +935,17 @@ Behavior:
 `TextToSpeechController` wraps:
 
 ```text
-window.speechSynthesis
-SpeechSynthesisUtterance
+POST /api/voice/speak
+HTMLAudioElement playback
 ```
 
 Behavior:
 
 - Automatically speaks completed assistant messages.
-- Uses browser and operating-system voices.
-- Supports voice name, language, pitch, rate, and volume.
+- Uses the configured ElevenLabs voice ID or the server default voice ID.
+- Supports model ID, stability, similarity, style, speaker boost, speed, and playback volume.
 - Removes basic Markdown syntax before speaking.
-- Cancels previous speech before starting a new utterance.
+- Cancels previous audio before starting new playback.
 
 ### 17.4 Privacy characteristic
 
@@ -951,7 +957,7 @@ The application server does not receive raw microphone recordings. On supported 
 | --- | --- |
 | Typed chat | Modern browser |
 | Speech input | Web Speech recognition support and microphone permission |
-| Speech output | Browser speech synthesis and an available system voice |
+| Speech output | Valid ElevenLabs server configuration and browser audio playback |
 | Production microphone use | Secure HTTPS origin |
 | Recommended browsers for microphone input | Current Chrome or Edge |
 
@@ -1140,11 +1146,15 @@ Copy `.env.example` to `.env.local` and provide values.
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Browser and server | Yes | Public Supabase key for browser auth and RLS-protected queries |
 | `NEXT_PUBLIC_SITE_URL` | Browser and server | Yes | Public app origin used for Supabase email redirects. Production: `https://voice.haizra.com` |
 | `SUPABASE_SECRET_KEY` | Server only | Yes | Privileged Supabase key for server persistence and account deletion |
-| `FIELDWAVES_API_URL` | Server only | Yes | Remote generation endpoint, normally ending in `/api/generate` |
-| `FIELDWAVES_USERNAME` | Server only | Yes | Basic Auth username for the AI endpoint |
-| `FIELDWAVES_PASSWORD` | Server only | Yes | Basic Auth password for the AI endpoint |
-| `FIELDWAVES_MODEL` | Server only | Yes | Text-generation model, default `gemma4:e2b` |
-| `FIELDWAVES_EMBED_MODEL` | Server only | Required for memory | Embedding model, default `nomic-embed-text` |
+| `OLLAMA_CLOUD_BASE_URL` | Server only | Yes | Ollama Cloud base URL. Default: `https://ollama.com` |
+| `OLLAMA_CLOUD_API_KEY` | Server only | Yes | Ollama Cloud bearer token |
+| `OLLAMA_CHAT_MODEL` | Server only | Yes | Chat model. Default: `gemma4:31b` |
+| `OLLAMA_EMBED_MODEL` | Server only | Required for memory | Embedding model that returns 768-dimensional vectors. Default: `nomic-embed-text` |
+| `ELEVENLABS_API_URL` | Server only | Yes | ElevenLabs API base URL. Default: `https://api.elevenlabs.io` |
+| `ELEVENLABS_API_KEY` | Server only | Yes | ElevenLabs API key |
+| `ELEVENLABS_DEFAULT_VOICE_ID` | Server only | Yes | Fallback voice ID used when a user has not selected a voice |
+| `ELEVENLABS_MODEL_ID` | Server only | Yes | ElevenLabs TTS model. Default: `eleven_multilingual_v2` |
+| `ELEVENLABS_OUTPUT_FORMAT` | Server only | Yes | TTS audio format. Default: `mp3_44100_128` |
 | `COPILOT_MCP_CONTEXT7_API_KEY` | Tooling only | No | Optional MCP configuration secret |
 | `COPILOT_MCP_GITHUB_TOKEN` | Tooling only | No | Optional MCP configuration secret |
 | `COPILOT_MCP_SUPABASE_ACCESS_TOKEN` | Tooling only | No | Optional MCP configuration secret |
@@ -1157,18 +1167,23 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 NEXT_PUBLIC_SITE_URL=https://voice.haizra.com
 SUPABASE_SECRET_KEY=
 
-FIELDWAVES_API_URL=https://ai.fieldwaves.com/api/generate
-FIELDWAVES_USERNAME=mardan
-FIELDWAVES_PASSWORD=
-FIELDWAVES_MODEL=gemma4:e2b
-FIELDWAVES_EMBED_MODEL=nomic-embed-text
+OLLAMA_CLOUD_BASE_URL=https://ollama.com
+OLLAMA_CLOUD_API_KEY=
+OLLAMA_CHAT_MODEL=gemma4:31b
+OLLAMA_EMBED_MODEL=nomic-embed-text
+
+ELEVENLABS_API_URL=https://api.elevenlabs.io
+ELEVENLABS_API_KEY=
+ELEVENLABS_DEFAULT_VOICE_ID=
+ELEVENLABS_MODEL_ID=eleven_multilingual_v2
+ELEVENLABS_OUTPUT_FORMAT=mp3_44100_128
 ```
 
 ### Secret-handling rules
 
 - Never commit `.env` or `.env.local`.
 - Never prefix `SUPABASE_SECRET_KEY` with `NEXT_PUBLIC_`.
-- Never prefix `FIELDWAVES_PASSWORD` with `NEXT_PUBLIC_`.
+- Never prefix `OLLAMA_CLOUD_API_KEY` or `ELEVENLABS_API_KEY` with `NEXT_PUBLIC_`.
 - Treat every `NEXT_PUBLIC_` variable as browser-visible.
 
 ---
@@ -1181,9 +1196,10 @@ FIELDWAVES_EMBED_MODEL=nomic-embed-text
 - `npm` or Bun.
 - A Supabase project.
 - PostgreSQL `vector` extension availability.
-- Access to an Ollama-compatible generation endpoint.
-- `gemma4:e2b` installed on the AI server.
-- `nomic-embed-text` installed on the AI server for semantic memory.
+- Ollama Cloud access and an API key.
+- The Ollama model slug configured in `OLLAMA_CHAT_MODEL` available to the account, defaulting to `gemma4:31b`.
+- An embedding model configured in `OLLAMA_EMBED_MODEL` that returns 768-dimensional vectors for semantic memory.
+- ElevenLabs access, an API key, and a default voice ID.
 
 ### 22.2 Install dependencies
 
@@ -1244,14 +1260,13 @@ For Google OAuth:
 <application-origin>/auth/callback
 ```
 
-### 22.6 Verify AI models
+### 22.6 Verify provider keys
 
-On an Ollama server:
+With provider keys in your shell:
 
 ```bash
-ollama pull gemma4:e2b
-ollama pull nomic-embed-text
-ollama list
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" https://ollama.com/api/tags
+curl -H "xi-api-key: $ELEVENLABS_API_KEY" https://api.elevenlabs.io/v2/voices
 ```
 
 ### 22.7 Run the development server
@@ -1307,7 +1322,7 @@ git diff --check
 | Submit a normal chat message | User message appears, assistant response streams incrementally, then finalizes. |
 | Temporarily disable embeddings | Streamed chat still works, but memory recall count remains zero. |
 | Open `/personality` and save changes | Future prompts use updated settings when an `ai_settings` row exists. |
-| Open `/voice-settings` and click `Test voice` | Browser speaks the test phrase. |
+| Open `/voice-settings` and click `Test voice` | ElevenLabs returns audio and the browser plays the test phrase. |
 | Use microphone in Chrome or Edge | Transcript is sent as a normal message after speech ends. |
 | Open `/history` | Latest persisted messages appear grouped by date. |
 | Delete account | Auth user and linked application records are removed. |
@@ -1317,25 +1332,31 @@ git diff --check
 Model list:
 
 ```bash
-curl -u "USERNAME:PASSWORD" https://ai.fieldwaves.com/api/tags
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" https://ollama.com/api/tags
 ```
 
 Text generation:
 
 ```bash
-curl -u "USERNAME:PASSWORD" \
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"model":"gemma4:e2b","prompt":"Reply with exactly: ready"}' \
-  https://ai.fieldwaves.com/api/generate
+  -d '{"model":"gemma4:31b","messages":[{"role":"user","content":"Reply with exactly: ready"}],"stream":false}' \
+  https://ollama.com/api/chat
 ```
 
 Embedding generation:
 
 ```bash
-curl -u "USERNAME:PASSWORD" \
+curl -H "Authorization: Bearer $OLLAMA_CLOUD_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"model":"nomic-embed-text","input":"health check"}' \
-  https://ai.fieldwaves.com/api/embed
+  https://ollama.com/api/embed
+```
+
+ElevenLabs voices:
+
+```bash
+curl -H "xi-api-key: $ELEVENLABS_API_KEY" https://api.elevenlabs.io/v2/voices
 ```
 
 ### 23.4 Automated-test status
@@ -1367,15 +1388,15 @@ The repository currently does not include an automated test suite. This is a kno
 | Browser to Supabase | Use publishable key plus user session and RLS. |
 | Browser to Next.js API | Require a bearer token for privileged actions. |
 | Next.js API to Supabase | Use secret key only after validating the caller's token. |
-| Next.js API to AI endpoint | Send Basic Auth credentials only from server code. |
+| Next.js API to provider APIs | Send Ollama Cloud and ElevenLabs credentials only from server code. |
 | User to user | Prevent cross-user data access through verified IDs and RLS filters. |
 
 ### 24.3 Important operational rules
 
 - Never commit plaintext secrets.
-- Rotate leaked AI gateway credentials immediately.
+- Rotate leaked provider credentials immediately.
 - Restrict Supabase Auth redirect URLs to trusted origins.
-- Keep the AI service behind HTTPS and authentication.
+- Keep provider traffic over HTTPS and authenticated.
 - Do not log access tokens, secret keys, passwords, or full private chat content.
 - Add rate limiting before exposing the application to untrusted high-volume traffic.
 
@@ -1612,6 +1633,6 @@ Potential future features:
 
 ## Conclusion
 
-AI Chat Companion is a modular full-stack AI application that combines authentication, relational data, vector search, streamed model output, configurable personality, emotion labels, browser voice APIs, and PWA support. Its strongest architectural decisions are the separation of public and trusted credentials, token-derived server authorization, RLS-protected browser queries, and graceful degradation when optional embeddings are unavailable.
+AI Chat Companion is a modular full-stack AI application that combines authentication, relational data, vector search, streamed model output, configurable personality, emotion labels, browser speech recognition, ElevenLabs voice output, and PWA support. Its strongest architectural decisions are the separation of public and trusted credentials, token-derived server authorization, RLS-protected browser queries, and graceful degradation when optional embeddings are unavailable.
 
 The repository is suitable for a university software-engineering presentation as long as the documented limitations are presented honestly: fresh-user database provisioning, stricter request validation, rate limiting, and automated tests remain the main next steps.
